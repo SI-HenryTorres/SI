@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doação - Contribua com o Projeto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuração customizada das cores
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'aqua-main': '#0077b6', // Azul ODS 6
+                        'impact-green': '#70e000', // Verde Ação/Impacto
+                        'aqua-light': '#90e0ef', // Ciano Claro (Fundo Secundário)
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body class="bg-aqua-light/30 text-slate-800 font-sans">
+
+    <header class="bg-white/90 backdrop-blur-sm shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+             <a href="attLandindPage.html" class="text-2xl font-bold text-aqua-main flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/128/4515/4515727.png" alt="Logo Água Viva" class="w-8 h-8 inline mr-2"> ÁGUA VIVA - DOAÇÃO
+            </a>
+            <a href="hub_ongs.html" class="text-slate-700 hover:text-aqua-main transition duration-300">
+                 <i class="fas fa-arrow-left mr-1"></i> Voltar para ONGs
+            </a>
+        </nav>
+    </header>
+
+    <main class="flex items-center justify-center py-12 md:py-24">
+        <div class="w-full max-w-md mx-auto bg-white p-8 rounded-xl shadow-2xl border border-aqua-main/20">
+            <h1 class="text-3xl font-bold text-center text-impact-green mb-2">Sua Contribuição Transforma!</h1>
+            <p class="text-center text-slate-600 mb-8">Doando para o Instituto Água Viva - Projeto Cisternas.</p>
+            
+            <form class="space-y-6">
+                
+                <div>
+                    <label for="donation-value" class="block text-lg font-medium text-aqua-main mb-2">Selecione o valor:</label>
+                    <div class="flex space-x-3 mb-3">
+                        <button type="button" class="flex-1 py-3 px-4 bg-aqua-light text-aqua-main rounded-lg font-semibold hover:bg-aqua-main hover:text-white transition duration-200">R$ 25</button>
+                        <button type="button" class="flex-1 py-3 px-4 bg-aqua-light text-aqua-main rounded-lg font-semibold hover:bg-aqua-main hover:text-white transition duration-200">R$ 50</button>
+                        <button type="button" class="flex-1 py-3 px-4 bg-aqua-light text-aqua-main rounded-lg font-semibold hover:bg-aqua-main hover:text-white transition duration-200">R$ 100</button>
+                    </div>
+                    <input type="number" id="donation-value" placeholder="Outro valor (R$)" class="w-full px-4 py-3 bg-white border-2 border-aqua-main/40 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-impact-green">
+                </div>
+
+                <div>
+                    <label class="block text-lg font-medium text-aqua-main mb-2">Forma de Pagamento:</label>
+                    <button type="button" class="w-full py-3 px-4 bg-impact-green text-white rounded-lg font-bold hover:bg-impact-green/80 transition duration-200 shadow-md">
+                         <i class="fas fa-qrcode mr-2"></i> PIX (Recomendado)
+                    </button>
+                     <p class="text-sm text-center text-slate-500 mt-2">Você será direcionado para a página de transição segura.</p>
+                </div>
+                
+                <div class="flex items-center mt-4">
+                    <input type="checkbox" id="identify-post" class="h-5 w-5 text-impact-green border-aqua-main/40 rounded focus:ring-impact-green">
+                    <label for="identify-post" class="ml-3 text-base text-slate-700 font-medium">Deseja se identificar no post da comunidade?</label>
+                </div>
+
+                <button type="submit" class="w-full py-4 mt-6 bg-aqua-main text-white text-xl font-bold rounded-lg hover:bg-aqua-main/80 transition duration-300 shadow-lg">
+                    Finalizar Doação
+                </button>
+
+            </form>
+        </div>
+    </main>
+    <script src="header-logic.js"></script> 
+</body>
+</html>

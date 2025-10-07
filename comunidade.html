@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Comunidade Água Viva — Conecte-se e Contribua</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"/>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'aqua-main': '#0077b6',
+                        'impact-green': '#70e000',
+                        'aqua-light': '#90e0ef',
+                        'post-bg': '#f7f9fc',
+                        'accent-yellow': '#FFD93D'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root{
+            --accent-yellow: #FFD93D;
+            --aqua-main: #0077b6;
+            --impact-green: #70e000;
+        }
+
+        /* Title: deeper, black->aqua gradient */
+        h1.title-highlight {
+            display: inline-block;
+            padding: .5rem 1rem;
+            border-radius: 14px;
+            color: white;
+            font-weight: 900;
+            background: linear-gradient(120deg, #02131a 0%, #003b5c 30%, #00b4d8 100%);
+            box-shadow: 0 18px 44px rgba(1,28,40,0.22);
+            transform: translateY(-6%);
+            transition: transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .18s ease;
+            backdrop-filter: blur(6px);
+        }
+        @media (max-width: 768px){ h1.title-highlight { transform: none; padding:.35rem .7rem; } }
+
+        /* Rain decorations (left) */
+        .rain-left { position: fixed; left:6px; top:-8vh; width:96px; height:140vh; pointer-events:none; z-index:0; }
+        .rain-left .drop { position:absolute; border-radius:50%/60% ; background: radial-gradient(circle at 30% 20%, #fff 0%, rgba(255,255,255,0.7) 20%, rgba(0,180,216,0.95) 60%); box-shadow: 0 6px 18px rgba(0,120,160,0.16); opacity:.92; transform: translateY(-10vh) scale(.9); animation: fall var(--fall-duration,10s) linear infinite; will-change: transform,opacity; }
+        @keyframes fall { 0%{transform:translateY(-10vh) scale(.6);opacity:0} 12%{opacity:1} 100%{transform:translateY(110vh) scale(1.05);opacity:.9} }
+        @media (max-width:768px){ .rain-left{display:none} }
+
+        /* NAV vertical list */
+        .nav-list { display:flex; flex-direction:column; gap:.5rem; padding:.25rem; }
+        .nav-item { display:block; text-align:left; width:100%; border-radius: .6rem; padding:.6rem .85rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(251,255,255,0.95)); border:1px solid rgba(0,119,182,0.05); font-weight:700; color:#0f172a; cursor:pointer; transition: transform .12s ease, box-shadow .12s ease, background .12s ease; }
+        .nav-item:hover { transform: translateX(6px); box-shadow: 0 10px 26px rgba(0,120,160,0.06); }
+        .nav-item.active { background: linear-gradient(90deg, rgba(0,180,216,0.12), rgba(112,224,0,0.06)); color:var(--aqua-main); border-color: rgba(0,180,216,0.12); box-shadow: 0 12px 30px rgba(0,120,160,0.08); }
+
+        /* Buttons */
+        .btn-favorite, .btn-like {
+            display:inline-flex; align-items:center; gap:.45rem; padding:.32rem .6rem; border-radius:.55rem; background:transparent; color:#475569; border:1px solid rgba(71,85,105,0.06); cursor:pointer; transition: all .16s ease; font-weight:600;
+        }
+        .btn-favorite.favorited { background:var(--accent-yellow); color:#072035; box-shadow:0 10px 30px rgba(255,217,61,0.12); border-color: rgba(0,0,0,0.06); }
+        .btn-like.liked { background: linear-gradient(90deg, rgba(112,224,0,0.06), rgba(0,180,216,0.06)); color:var(--impact-green); border-color: rgba(112,224,0,0.12); box-shadow:0 10px 26px rgba(0,120,160,0.06); }
+
+        /* Favorites list */
+        #favorites-list { display:grid; gap:1rem; grid-template-columns:1fr; }
+        @media(min-width:768px){ #favorites-list { grid-template-columns: repeat(2,1fr);} }
+        .favorite-card { background:#fff; padding:1rem; border-radius:.75rem; box-shadow:0 12px 30px rgba(3,45,65,0.06); border:1px solid rgba(112,224,0,0.06); }
+
+        /* Posts */
+        .post-hover:hover { box-shadow: 0 18px 36px rgba(3,45,65,0.08); transform: translateY(-4px); }
+        .reveal-section { animation: revealFade .48s cubic-bezier(.2,.9,.3,1) both; }
+        @keyframes revealFade { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+        /* Comments */
+        .comment-list{margin-top:.75rem;display:flex;flex-direction:column;gap:.6rem;}
+        .comment{background:rgba(255,255,255,0.98);padding:.6rem;border-radius:.5rem;border:1px solid rgba(3,45,65,0.03);}
+        .comment .meta{font-size:.78rem;color:#64748b;margin-bottom:.2rem;}
+        .comment-form{margin-top:.6rem;display:flex;gap:.5rem;align-items:flex-start;}
+        .comment-form textarea{width:100%;min-height:56px;border-radius:.5rem;padding:.6rem;border:1px solid rgba(3,45,65,0.06);resize:vertical;}
+        .comment-small-btn{padding:.45rem .6rem;border-radius:.5rem;background:var(--aqua-main);color:white;font-weight:700;border:none;cursor:pointer;}
+
+        /* Empty favorites message */
+        .favorites-empty { padding:1rem; background:#f8fafc; border-radius:.6rem; border:1px dashed rgba(0,119,182,0.06); color:#64748b; text-align:center; }
+
+        /* Toasts */
+        .toast-portal { position: fixed; right: 1rem; bottom: 1rem; z-index: 99999; display:flex; flex-direction:column; gap:0.6rem; align-items:flex-end; pointer-events:none; }
+        .toast {
+            pointer-events: auto;
+            min-width: 220px;
+            max-width: 380px;
+            background: white;
+            border-left: 4px solid var(--aqua-main);
+            padding: 0.75rem 1rem;
+            border-radius: 0.6rem;
+            box-shadow: 0 14px 38px rgba(3,45,65,0.14);
+            transform-origin: 100% 100%;
+            animation: toastIn .28s cubic-bezier(.2,.9,.3,1);
+            display:flex;
+            gap: .6rem;
+            align-items:center;
+            font-weight:600;
+            color:#0f172a;
+        }
+        .toast.success { border-left-color: var(--impact-green); }
+        .toast.warn { border-left-color: #f59e0b; }
+        .toast .msg { font-weight:700; font-size:0.95rem; }
+        @keyframes toastIn { from { opacity:0; transform: translateY(8px) scale(.98); } to { opacity:1; transform: translateY(0) scale(1); } }
+
+        .toast .sub { font-weight:400; color:#475569; font-size:.85rem; margin-top:2px; }
+    </style>
+</head>
+<body class="bg-white text-slate-800 font-sans relative">
+
+    <!-- Rain -->
+    <div id="rain-left" class="rain-left" aria-hidden="true"></div>
+
+    <header class="bg-white/90 backdrop-blur-sm shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="attLandindPage.html" class="text-2xl font-bold text-aqua-main flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/128/4515/4515727.png" alt="Logo Água Viva" class="w-8 h-8 inline mr-2"> ÁGUA VIVA
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="attLandindPage.html#hero" class="text-slate-800 hover:text-aqua-main transition duration-300">Início</a>
+                <a href="comunidade.html" class="text-aqua-main font-semibold transition duration-300">Comunidade</a>
+                <a href="hub_ongs.html" class="text-slate-800 hover:text-aqua-main transition duration-300">ONGs</a>
+                <a href="attCadastro.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Seja um Parceiro</a>
+                <a href="conheçaOProjeto.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Conheça o Projeto</a>
+                <a href="abaEntrar_login.html" class="py-2 px-5 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">Entrar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12 relative z-10">
+        <h1 class="text-4xl font-extrabold mb-8"><span class="title-highlight" tabindex="0">Comunidade Água Viva</span></h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <aside class="lg:col-span-1 space-y-4 z-20">
+                <button id="btn-create-post" class="w-full py-3 bg-impact-green text-white font-bold rounded-lg hover:bg-impact-green/80 transition duration-300 shadow-lg">Criar Post</button>
+
+                <div class="bg-aqua-light/30 p-4 rounded-lg shadow-sm">
+                    <p class="text-lg font-bold text-aqua-main mb-2">Navegação</p>
+
+                    <!-- Vertical nav list -->
+                    <div class="nav-list" role="tablist" aria-label="Navegação da comunidade">
+                        <button id="nav-feed" class="nav-item" data-target="#feed-container" role="tab" aria-selected="false">Feed de Posts (Principal)</button>
+                        <button id="nav-favs" class="nav-item" data-target="#acompanhar-projetos-secao" role="tab" aria-selected="false">Meus Favoritos <span id="fav-badge" class="ml-2 inline-block text-xs font-semibold bg-transparent text-slate-600"></span></button>
+                        <button id="nav-ongs" class="nav-item" data-external="true" data-href="hub_ongs.html" role="tab" aria-selected="false">Empresas Parceiras</button>
+                    </div>
+                </div>
+
+                <!-- Partners block (kept) -->
+                <div id="parceiros-destaque" class="bg-white border border-aqua-main/10 p-4 rounded-lg shadow-sm">
+                    <p class="text-lg font-bold text-impact-green mb-3">Parceiros em Destaque</p>
+                    <p class="text-sm text-slate-700 mb-2">Empresas que contribuem para o saneamento:</p>
+                    <ul class="space-y-1 text-sm text-aqua-main font-medium">
+                        <li>- Tech Solution (Tecnologia)</li>
+                        <li>- Água Limpa S/A (Infraestrutura)</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <section id="feed-container" class="lg:col-span-3 space-y-6 z-20" tabindex="-1">
+                <div class="lg:hidden bg-post-bg p-4 rounded-lg shadow-md border border-aqua-light">
+                    <button id="btn-create-post-mobile" class="w-full text-left py-2 px-4 bg-white text-slate-500 rounded-full border border-aqua-main/20 hover:border-aqua-main transition duration-300">
+                        O que você quer compartilhar sobre saneamento?
+                    </button>
+                </div>
+
+                <!-- POST 1 -->
+                <article class="bg-post-bg p-6 rounded-lg shadow-md border border-aqua-light hover:shadow-aqua-main/10 transition post-hover" data-post-id="post-1" id="post-1" tabindex="0">
+                    <header class="flex items-center space-x-3 mb-3">
+                        <img class="w-10 h-10 rounded-full" src="https://portalagita.com.br/wp-content/uploads/2025/02/Morre-Dona-Maria-mae-do-empresario-e-secretario-de-Esportes-de-Betim-Sapao.jpg-e1739759189395.webp" alt="Avatar Dona Maria">
+                        <div>
+                            <p class="font-bold text-aqua-main">Dona Maria</p>
+                            <p class="text-xs text-slate-500">Postou em Recife/PE • 12/09/2025</p>
+                        </div>
+                    </header>
+                    <p class="text-slate-800 mb-4">A água chegou hoje! Depois de 3 dias sem abastecimento aqui na Mustardinha, a comunidade está agradecida. A denúncia que fizemos no site realmente funcionou! Continuem acompanhando a página do projeto X. #ÁguaViva #SaneamentoPE</p>
+                    <div class="comment-area"></div>
+
+                    <footer class="flex justify-between items-center text-sm text-slate-500 mt-3">
+                        <div class="flex space-x-4 items-center">
+                            <button class="btn-comment flex items-center hover:text-aqua-main transition" data-post-id="post-1" aria-label="Comentar no post 1" aria-expanded="false"><i class="fas fa-comment mr-1"></i> <span class="btn-comment-label">Comentar (15)</span></button>
+
+                            <!-- LIKE: updated markup -->
+                            <button class="btn-like" data-post-id="post-1" aria-pressed="false" aria-label="Curtir post 1">
+                                <i class="fa-regular fa-heart mr-1" aria-hidden="true"></i>
+                                <span class="like-label">Curtir</span>
+                                <span class="mx-1 text-slate-400">·</span>
+                                <span class="like-count">45</span>
+                            </button>
+
+                            <button class="btn-favorite" data-post-id="post-1" aria-pressed="false" aria-label="Favoritar post 1"><i class="fa-regular fa-star" aria-hidden="true"></i> <span class="fav-label">Favoritar</span></button>
+                        </div>
+                        <a href="#" class="text-aqua-main font-semibold hover:underline">Ver Post Completo</a>
+                    </footer>
+                </article>
+
+                <!-- POST 2 -->
+                <article class="bg-post-bg p-6 rounded-lg shadow-md border border-aqua-light hover:shadow-aqua-main/10 transition post-hover" data-post-id="post-2" id="post-2" tabindex="0">
+                    <header class="flex items-center space-x-3 mb-3">
+                        <img class="w-10 h-10 rounded-full" src="https://png.pngtree.com/element_our/20200702/ourmid/pngtree-vector-green-water-drop-image_2286242.jpg" alt="Avatar Projeto Gota Limpa">
+                        <div>
+                            <p class="font-bold text-impact-green">Projeto Gota Limpa Recife</p>
+                            <p class="text-xs text-slate-500">Projeto Verificado • 10/09/2025</p>
+                        </div>
+                    </header>
+                    <p class="text-slate-800 mb-4">Graças à doação da <strong>Empresa Parceira Tech Solution</strong> e de 50 colaboradores da comunidade, conseguimos finalizar a primeira etapa da construção do filtro de água pluvial no bairro do Jordão. O projeto está 78% concluído!</p>
+                    <div class="flex justify-between items-center bg-white p-3 rounded-md border border-impact-green/50 my-3">
+                        <p class="text-sm font-semibold text-aqua-main">Empresa Contribuinte: Parceira Tech Solution</p>
+                        <a href="#" class="text-impact-green hover:underline font-bold text-sm">Ver Contribuição</a>
+                    </div>
+                    <div class="comment-area"></div>
+
+                    <footer class="flex justify-between items-center text-sm text-slate-500 mt-4">
+                        <div class="flex space-x-4 items-center">
+                            <button class="btn-comment flex items-center hover:text-aqua-main transition" data-post-id="post-2" aria-label="Comentar no post 2" aria-expanded="false"><i class="fas fa-comment mr-1"></i> <span class="btn-comment-label">Comentar (32)</span></button>
+
+                            <!-- LIKE: updated markup -->
+                            <button class="btn-like" data-post-id="post-2" aria-pressed="false" aria-label="Curtir post 2">
+                                <i class="fa-regular fa-heart mr-1" aria-hidden="true"></i>
+                                <span class="like-label">Curtir</span>
+                                <span class="mx-1 text-slate-400">·</span>
+                                <span class="like-count">120</span>
+                            </button>
+
+                            <button class="btn-favorite" data-post-id="post-2" aria-pressed="false" aria-label="Favoritar post 2"><i class="fa-regular fa-star" aria-hidden="true"></i> <span class="fav-label">Favoritar</span></button>
+                        </div>
+                        <button class="bg-aqua-main text-white py-1 px-3 rounded-full hover:bg-aqua-main/80 transition font-semibold" aria-label="Doar para projeto 2">DOAR AGORA</button>
+                    </footer>
+                </article>
+
+                <!-- FAVORITES SECTION -->
+                <section id="acompanhar-projetos-secao" class="hidden pt-10 border-t border-aqua-main/20" aria-labelledby="acompanharTitle" tabindex="-1">
+                    <h2 id="acompanharTitle" class="text-3xl font-bold text-aqua-main mb-6">Meus Projetos Favoritos</h2>
+                    <p class="text-slate-700 mb-4">Aqui você acompanha o progresso dos posts, ONGs e projetos que você favoritou, com conteúdo expandido e os créditos de todos que contribuíram.</p>
+
+                    <div id="favorites-list" class="mb-6"></div>
+                    <div id="favorites-empty" class="favorites-empty hidden">Você ainda não favoritou nenhum projeto. Clique em <strong>Favoritar</strong> em um post para adicioná-lo aqui.</div>
+
+                    <!-- preserved example card -->
+                    <div class="bg-white p-6 rounded-lg shadow-xl border border-impact-green/30">
+                        <h3 class="text-xl font-bold text-impact-green mb-3">Projeto Gota Limpa Recife - Construção de Filtro (Favorito da Comunidade)</h3>
+                        <p class="text-sm text-slate-500 mb-2">Última atualização: 15/09/2025</p>
+                        <div class="w-full bg-aqua-light rounded-full h-2.5 mb-4"><div class="bg-impact-green h-2.5 rounded-full" style="width:78%"></div></div>
+                        <p class="text-slate-800 mb-4 font-medium">Progresso Atual: 78% concluído. O valor captado foi integralmente utilizado na compra de materiais.</p>
+                        <p class="text-sm text-slate-600 mb-4">Colaboradores: 50 Doadores Individuais, Empresa Parceira Y S.A.</p>
+                        <button class="bg-aqua-main text-white py-2 px-4 rounded-lg hover:bg-aqua-main/80 transition font-semibold">DOAR AGORA (Apoiar este Projeto)</button>
+                    </div>
+                </section>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="create-post-modal" class="modal fixed inset-0 bg-slate-900 bg-opacity-50 flex items-center justify-center opacity-0 pointer-events-none z-50">
+        <div class="bg-white p-6 rounded-lg shadow-2xl w-full max-w-lg transform scale-95 transition-transform duration-300">
+            <h2 class="text-2xl font-bold text-aqua-main mb-4">Compartilhe com a Comunidade</h2>
+            <form id="form-create-post">
+                <textarea id="post-text" class="w-full p-3 border border-aqua-main/30 rounded-lg focus:ring-impact-green focus:border-impact-green resize-none mb-3 text-slate-800" rows="5" placeholder="O que você quer contar sobre saneamento ou sobre um projeto?"></textarea>
+                <label class="block text-sm text-slate-600 mb-2">Imagem (opcional)</label>
+                <input type="file" id="post-image" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-aqua-light file:text-aqua-main hover:file:bg-aqua-main/30 transition duration-300 mb-4">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="btn-close-modal" class="py-2 px-4 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition">Cancelar</button>
+                    <button type="submit" id="btn-publish" class="py-2 px-4 bg-impact-green text-white rounded-lg hover:bg-impact-green/80 transition font-semibold">Publicar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast portal -->
+    <div class="toast-portal" id="toast-portal" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const CURRENT_USER = 'Henry';
+
+    /* Storage keys */
+    const favoritesKey = 'aguaVivaFavoritesV1';
+    const postsStoreKey = 'aguaVivaPostsV1';
+    const likesCountKey = 'aguaVivaLikesCountsV1';
+    const likesUserKey = 'aguaVivaLikesUserV1';
+    const commentsKey = 'aguaVivaCommentsV1';
+
+    /* Storage helpers */
+    function loadJSON(key, fallback){ try { const r = localStorage.getItem(key); return r ? JSON.parse(r) : fallback; } catch(e){ return fallback; } }
+    function saveJSON(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch(e){} }
+
+    /* Toast helper */
+    const toastPortal = document.getElementById('toast-portal');
+    function showToast(message, opts = {}) {
+        // opts: { type: 'success'|'warn'|'info', ttl: ms }
+        const type = opts.type || 'success';
+        const ttl = typeof opts.ttl === 'number' ? opts.ttl : 3000;
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.setAttribute('role','status');
+        t.innerHTML = `<div class="msg">${message}</div>`;
+        toastPortal.appendChild(t);
+        // auto remove
+        setTimeout(()=> {
+            t.style.transition = 'transform .24s ease, opacity .2s ease';
+            t.style.opacity = '0';
+            t.style.transform = 'translateY(6px) scale(.98)';
+            setTimeout(()=> t.remove(), 260);
+        }, ttl);
+    }
+
+    /* Seed posts store from DOM articles so favorites have metadata */
+    function seedPostsStoreFromDOM(){
+        const store = loadJSON(postsStoreKey, {});
+        document.querySelectorAll('article[data-post-id]').forEach(article => {
+            const id = article.dataset.postId;
+            const titleEl = article.querySelector('header > div > p') || article.querySelector('h3');
+            const title = titleEl ? titleEl.textContent.trim() : 'Projeto';
+            const para = article.querySelector('p');
+            const excerpt = para ? para.textContent.trim().slice(0,160) : '';
+            if (!store[id]) store[id] = { id, title, excerpt, createdAt: new Date().toISOString() };
+        });
+        saveJSON(postsStoreKey, store);
+        return store;
+    }
+
+    /* Favorites helpers */
+    function loadFavorites(){ return loadJSON(favoritesKey, []); }
+    function saveFavorites(arr){ saveJSON(favoritesKey, arr); }
+    function cleanOrphanFavorites(){
+        const favs = loadFavorites();
+        const store = loadJSON(postsStoreKey, {});
+        const valid = Array.from(new Set(favs)).filter(id => {
+            const dom = document.querySelector(`[data-post-id="${id}"]`);
+            if (dom) return true;
+            if (store && store[id]) return true;
+            return false;
+        });
+        if (valid.length !== favs.length) saveFavorites(valid);
+        return valid;
+    }
+
+    function createFavoriteCardFromData(data){
+        const card = document.createElement('div');
+        card.className = 'favorite-card';
+        card.setAttribute('data-post-id', data.id);
+        card.innerHTML = `
+            <div class="flex justify-between items-start gap-3">
+                <div>
+                    <h4 class="font-bold text-aqua-main mb-1">${escapeHtml(data.title)}</h4>
+                    <p class="text-sm text-slate-700 mb-2">${escapeHtml(data.excerpt)}</p>
+                    <div class="flex gap-2">
+                        <a class="text-sm text-aqua-main font-semibold hover:underline" href="#">Ver Detalhes</a>
+                        <button class="text-sm text-slate-600 btn-remove-favorite" data-post-id="${data.id}" aria-label="Remover dos favoritos">Remover</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+
+    /* Render favorites: friendly message if empty */
+    function renderFavorites(){
+        const favs = cleanOrphanFavorites();
+        const store = loadJSON(postsStoreKey, {});
+        const container = document.getElementById('favorites-list');
+        const emptyNote = document.getElementById('favorites-empty');
+        container.innerHTML = '';
+        if (!favs.length){
+            emptyNote.classList.remove('hidden');
+            document.getElementById('acompanhar-projetos-secao').classList.remove('hidden'); // reveal so nav click shows it
+            updateFavBadge(0);
+            return;
+        }
+        emptyNote.classList.add('hidden');
+        document.getElementById('acompanhar-projetos-secao').classList.remove('hidden');
+        updateFavBadge(favs.length);
+        favs.forEach(id => {
+            const article = document.querySelector(`[data-post-id="${id}"]`);
+            if (article){
+                const titleEl = article.querySelector('header > div > p') || article.querySelector('h3');
+                const title = titleEl ? titleEl.textContent.trim() : (store[id] ? store[id].title : 'Favorito');
+                const para = article.querySelector('p');
+                const excerpt = para ? para.textContent.trim().slice(0,160) : (store[id] ? store[id].excerpt : '');
+                container.appendChild(createFavoriteCardFromData({ id, title, excerpt }));
+            } else if (store[id]){
+                container.appendChild(createFavoriteCardFromData(store[id]));
+            }
+        });
+        // wire remove buttons (idempotent)
+        container.querySelectorAll('.btn-remove-favorite').forEach(btn => {
+            if (!btn.dataset._wired) {
+                btn.addEventListener('click', (e) => {
+                    const id = btn.dataset.postId;
+                    toggleFavoriteById(id, false);
+                    showToast('Removido dos Meus Favoritos', { type: 'warn' });
+                });
+                btn.dataset._wired = "1";
+            }
+        });
+    }
+
+    function toggleFavoriteById(postId, setTo){
+        const favs = loadFavorites();
+        const idx = favs.indexOf(postId);
+        if (setTo === undefined) setTo = idx === -1;
+        if (setTo && idx === -1) favs.push(postId);
+        else if (!setTo && idx !== -1) favs.splice(idx,1);
+        saveFavorites(favs);
+        // seed metadata if adding
+        if (setTo){
+            const article = document.querySelector(`[data-post-id="${postId}"]`);
+            if (article){
+                const store = loadJSON(postsStoreKey, {});
+                const titleEl = article.querySelector('header > div > p') || article.querySelector('h3');
+                const title = titleEl ? titleEl.textContent.trim() : 'Projeto Favorito';
+                const para = article.querySelector('p');
+                const excerpt = para ? para.textContent.trim().slice(0,160) : '';
+                store[postId] = { id: postId, title, excerpt, createdAt: new Date().toISOString() };
+                saveJSON(postsStoreKey, store);
+            }
+            updateFavoriteButtons(postId, true);
+            renderFavorites();
+            showToast('Adicionado aos Meus Favoritos', { type: 'success' });
+        } else {
+            updateFavoriteButtons(postId, false);
+            renderFavorites();
+            showToast('Removido dos Meus Favoritos', { type: 'warn' });
+        }
+    }
+
+    function updateFavoriteButtons(postId, isFav){
+        const btns = Array.from(document.querySelectorAll(`.btn-favorite[data-post-id="${postId}"]`));
+        btns.forEach(btn => {
+            btn.setAttribute('aria-pressed', String(Boolean(isFav)));
+            if (isFav) {
+                btn.classList.add('favorited');
+                const icon = btn.querySelector('.fa-star');
+                if (icon) { icon.classList.remove('fa-regular'); icon.classList.add('fa-solid'); }
+                const lab = btn.querySelector('.fav-label'); if (lab) lab.textContent='Favoritado';
+            } else {
+                btn.classList.remove('favorited');
+                const icon = btn.querySelector('.fa-star');
+                if (icon) { icon.classList.remove('fa-solid'); icon.classList.add('fa-regular'); }
+                const lab = btn.querySelector('.fav-label'); if (lab) lab.textContent='Favoritar';
+            }
+        });
+        // update badge
+        const count = loadFavorites().length;
+        updateFavBadge(count);
+    }
+
+    function updateFavBadge(count){
+        const badge = document.getElementById('fav-badge');
+        if (!badge) return;
+        if (count > 0) {
+            badge.textContent = `(${count})`;
+            badge.classList.remove('hidden');
+        } else {
+            badge.textContent = '';
+        }
+    }
+
+    /* Likes system with FB-like label rules + toasts */
+    function initLikes(){
+        const counts = loadJSON(likesCountKey, {});
+        document.querySelectorAll('.btn-like').forEach(btn=>{
+            const pid = btn.dataset.postId;
+            const countEl = btn.querySelector('.like-count');
+            const domCount = Number(countEl ? countEl.textContent.trim() : 0);
+            if (!(pid in counts)) counts[pid] = domCount;
+            else if (countEl) countEl.textContent = counts[pid];
+        });
+        saveJSON(likesCountKey, counts);
+        const userLikes = loadJSON(likesUserKey, []);
+        document.querySelectorAll('.btn-like').forEach(btn=>{
+            const pid = btn.dataset.postId;
+            const liked = userLikes.includes(pid);
+            setLikeButtonState(btn, liked);
+            if (!btn.dataset._likeWired){
+                btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); toggleLike(pid, btn); });
+                btn.dataset._likeWired = "1";
+            }
+        });
+    }
+
+    function setLikeButtonState(btn, liked){
+        btn.setAttribute('aria-pressed', String(Boolean(liked)));
+        const icon = btn.querySelector('.fa-heart');
+        const countEl = btn.querySelector('.like-count');
+        const labelEl = btn.querySelector('.like-label');
+        const counts = loadJSON(likesCountKey, {});
+        const count = counts[btn.dataset.postId] || 0;
+        if (liked){
+            btn.classList.add('liked');
+            if (icon) { icon.classList.remove('fa-regular'); icon.classList.add('fa-solid'); }
+            // FB-like label: "Você e N" or "Você curtiu"
+            if (count > 1) {
+                labelEl.textContent = `Você e ${count - 1}`;
+            } else {
+                labelEl.textContent = `Você curtiu`;
+            }
+        } else {
+            btn.classList.remove('liked');
+            if (icon) { icon.classList.remove('fa-solid'); icon.classList.add('fa-regular'); }
+            labelEl.textContent = 'Curtir';
+        }
+        if (countEl) countEl.textContent = count;
+    }
+
+    function toggleLike(postId, btn){
+        const counts = loadJSON(likesCountKey, {});
+        const userLikes = loadJSON(likesUserKey, []);
+        const currentlyLiked = userLikes.includes(postId);
+        if (!currentlyLiked){ counts[postId] = (counts[postId]||0)+1; userLikes.push(postId); showToast('Você curtiu', { type: 'success' }); }
+        else { counts[postId] = Math.max(0,(counts[postId]||1)-1); const idx = userLikes.indexOf(postId); if (idx>-1) userLikes.splice(idx,1); showToast('Removido do Curtidos', { type: 'warn' }); }
+        saveJSON(likesCountKey, counts); saveJSON(likesUserKey, userLikes);
+        const button = btn || document.querySelector(`.btn-like[data-post-id="${postId}"]`);
+        if (button) setLikeButtonState(button, !currentlyLiked);
+        if (button) button.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});
+    }
+
+    /* Comments */
+    function loadCommentsAll(){ return loadJSON(commentsKey, {}); }
+    function saveCommentsAll(obj){ saveJSON(commentsKey, obj); }
+    function renderCommentsForPost(postEl){
+        const postId = postEl.dataset.postId;
+        const container = postEl.querySelector('.comment-area');
+        if (!container) return;
+        let commentsList = container.querySelector('.comment-list');
+        if (commentsList) commentsList.remove();
+        commentsList = document.createElement('div'); commentsList.className='comment-list';
+        const all = loadCommentsAll();
+        const arr = all[postId] || [];
+        arr.forEach(c => commentsList.appendChild(renderSingleComment(c)));
+        container.prepend(commentsList);
+    }
+    function renderSingleComment(c){
+        const el = document.createElement('div'); el.className='comment'; el.setAttribute('data-comment-id', c.id);
+        el.innerHTML = `<div class="meta"><strong>${escapeHtml(c.author)}</strong> • <span class="time">${new Date(c.createdAt).toLocaleString()}</span></div><div class="text">${escapeHtml(c.text)}</div>`;
+        if (c.author === CURRENT_USER){
+            const btn = document.createElement('button'); btn.className='text-xs text-slate-600 mt-2'; btn.textContent='Excluir Comentário'; btn.style.background='transparent'; btn.style.border='none'; btn.style.cursor='pointer';
+            btn.addEventListener('click', () => { if (confirm('Remover seu comentário?')) removeComment(c.id, c.postId); });
+            el.appendChild(btn);
+        }
+        return el;
+    }
+    function appendCommentToPost(postId, commentObj){
+        const all = loadCommentsAll(); if (!all[postId]) all[postId]=[]; all[postId].push(commentObj); saveCommentsAll(all);
+        const postEl = document.querySelector(`[data-post-id="${postId}"]`); if (postEl) renderCommentsForPost(postEl);
+    }
+    function removeComment(commentId, postId){ const all = loadCommentsAll(); if (!all[postId]) return; const idx = all[postId].findIndex(c=>c.id===commentId); if(idx>-1){ all[postId].splice(idx,1); saveCommentsAll(all);} const postEl = document.querySelector(`[data-post-id="${postId}"]`); if (postEl) renderCommentsForPost(postEl); }
+
+    function initComments(){
+        document.querySelectorAll('.btn-comment').forEach(btn=>{
+            if (!btn.dataset._wiredComment){ btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); const postId = btn.dataset.postId; const postEl = document.querySelector(`[data-post-id="${postId}"]`); if (!postEl) return; toggleCommentForm(postEl, btn); }); btn.dataset._wiredComment = "1"; }
+        });
+        document.querySelectorAll('article[data-post-id]').forEach(a => renderCommentsForPost(a));
+    }
+    function toggleCommentForm(postEl, triggerBtn){
+        const container = postEl.querySelector('.comment-area'); let form = container.querySelector('.comment-form');
+        if (form){ form.remove(); triggerBtn.setAttribute('aria-expanded','false'); return; }
+        form = document.createElement('form'); form.className='comment-form';
+        form.innerHTML = `<textarea name="comment" placeholder="Escreva um comentário..." required></textarea><div style="display:flex;flex-direction:column;gap:.4rem;"><button type="submit" class="comment-small-btn">Enviar</button><button type="button" class="comment-small-btn" style="background:#f3f4f6;color:#0f172a;border:none;" aria-label="Cancelar comentário">Cancelar</button></div>`;
+        container.appendChild(form);
+        const textarea = form.querySelector('textarea'); textarea.focus();
+        form.querySelector('button[type="button"]').addEventListener('click', ()=>{ form.remove(); triggerBtn.setAttribute('aria-expanded','false'); });
+        form.addEventListener('submit', ev => { ev.preventDefault(); const text = textarea.value.trim(); if(!text) return alert('Escreva algo antes de enviar.'); const commentObj = { id:'c-'+Date.now(), postId: postEl.dataset.postId, author: CURRENT_USER, text, createdAt:new Date().toISOString() }; appendCommentToPost(postEl.dataset.postId, commentObj); form.remove(); triggerBtn.setAttribute('aria-expanded','false'); });
+        triggerBtn.setAttribute('aria-expanded','true');
+    }
+
+    /* Init favorites wiring */
+    function initFavorites(){
+        seedPostsStoreFromDOM();
+        document.querySelectorAll('.btn-favorite').forEach(btn=>{
+            if (!btn.querySelector('.fav-label')) {
+                const textNodes = Array.from(btn.childNodes).filter(n=>n.nodeType===Node.TEXT_NODE);
+                const existing = textNodes.map(n=>n.textContent.trim()).join(' ');
+                textNodes.forEach(n=>n.remove());
+                const s = document.createElement('span'); s.className='fav-label'; s.textContent = existing || 'Favoritar'; btn.appendChild(s);
+            }
+            if (!btn.dataset._wired) {
+                btn.addEventListener('click', e => {
+                    e.preventDefault(); e.stopPropagation();
+                    const postId = btn.dataset.postId;
+                    const favs = loadFavorites();
+                    const will = !favs.includes(postId);
+                    // quick UI feedback
+                    updateFavoriteButtons(postId, will);
+                    toggleFavoriteById(postId, will);
+                });
+                btn.dataset._wired = "1";
+            }
+        });
+        // initial states
+        const favs = loadFavorites();
+        favs.forEach(id => updateFavoriteButtons(id, true));
+        renderFavorites();
+    }
+
+    /* Navigation vertical + improved behavior for Meus Favoritos */
+    (function initNav(){
+        const all = Array.from(document.querySelectorAll('.nav-item'));
+        const internal = all.filter(i => i.dataset.target && i.dataset.target.startsWith('#'));
+        const sections = internal.map(i => document.querySelector(i.dataset.target)).filter(Boolean);
+        function clearActive(){ all.forEach(i => { i.classList.remove('active'); i.setAttribute('aria-selected','false'); }); }
+        function setActiveByTarget(sel){ clearActive(); const it = all.find(n => n.dataset.target === sel); if (it){ it.classList.add('active'); it.setAttribute('aria-selected','true'); } }
+        all.forEach(it => {
+            it.addEventListener('click', e => {
+                e.preventDefault();
+                if (it.dataset.external === "true" && it.dataset.href) {
+                    window.location.href = it.dataset.href;
+                    return;
+                }
+                const sel = it.dataset.target;
+                if (!sel) return;
+                if (sel === '#acompanhar-projetos-secao') {
+                    const favSection = document.querySelector(sel);
+                    if (favSection) {
+                        favSection.classList.remove('hidden');
+                        renderFavorites();
+                        setTimeout(()=> { favSection.scrollIntoView({behavior:'smooth', block:'start'}); setActiveByTarget(sel); }, 60);
+                    }
+                    return;
+                }
+                const target = document.querySelector(sel);
+                if (target){
+                    target.scrollIntoView({behavior:'smooth', block:'start'});
+                    setActiveByTarget(sel);
+                    setTimeout(()=>{ target.setAttribute('tabindex','-1'); target.focus({preventScroll:true}); },600);
+                }
+            });
+        });
+        if (sections.length && 'IntersectionObserver' in window){
+            const obs = new IntersectionObserver((entries)=>{
+                const visible = entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
+                if (visible.length){
+                    const id = '#' + visible[0].target.id;
+                    setActiveByTarget(id);
+                }
+            }, { root:null, threshold:[0.45,0.6] });
+            sections.forEach(s => obs.observe(s));
+        }
+        setActiveByTarget('#feed-container');
+    })();
+
+    /* Create post: seeds postsStore metadata so favorites will always show */
+    const form = document.getElementById('form-create-post');
+    form && form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = (document.getElementById('post-text').value || '').trim();
+        if (!text) { alert('Escreva algo antes de publicar.'); return; }
+        const newId = 'post-' + Date.now();
+        const card = document.createElement('article');
+        card.className = 'bg-post-bg p-6 rounded-lg shadow-md border border-aqua-light hover:shadow-aqua-main/10 transition post-hover';
+        card.setAttribute('data-post-id', newId);
+        card.setAttribute('id', newId);
+        card.innerHTML = `
+            <header class="flex items-center space-x-3 mb-3">
+                <img class="w-10 h-10 rounded-full" src="https://source.unsplash.com/40x40/?person" alt="Avatar ${escapeHtml(CURRENT_USER)}">
+                <div>
+                    <p class="font-bold text-aqua-main">${escapeHtml(CURRENT_USER)}</p>
+                    <p class="text-xs text-slate-500">Agora</p>
+                </div>
+            </header>
+            <p class="text-slate-800 mb-4">${escapeHtml(text)}</p>
+            <div class="comment-area"></div>
+            <footer class="flex justify-between items-center text-sm text-slate-500">
+                <div class="flex space-x-4 items-center">
+                    <button class="btn-comment flex items-center hover:text-aqua-main transition" data-post-id="${newId}" aria-label="Comentar novo post" aria-expanded="false"><i class="fas fa-comment mr-1"></i> <span class="btn-comment-label">Comentar</span></button>
+                    <button class="btn-like" data-post-id="${newId}" aria-pressed="false" aria-label="Curtir novo post"><i class="fa-regular fa-heart mr-1"></i> <span class="like-label">Curtir</span> <span class="mx-1 text-slate-400">·</span> <span class="like-count">0</span></button>
+                    <button class="btn-favorite" data-post-id="${newId}" aria-pressed="false" aria-label="Favoritar novo post"><i class="fa-regular fa-star" aria-hidden="true"></i> <span class="fav-label">Favoritar</span></button>
+                </div>
+                <a href="#" class="text-aqua-main font-semibold hover:underline">Ver Post Completo</a>
+            </footer>
+        `;
+        const feed = document.getElementById('feed-container');
+        const first = feed.querySelector('article');
+        if (first) feed.insertBefore(card, first); else feed.appendChild(card);
+
+        // seed posts store (prevents orphan favorites)
+        const store = loadJSON(postsStoreKey, {});
+        store[newId] = { id: newId, title: CURRENT_USER, excerpt: text.slice(0,160), createdAt: new Date().toISOString() };
+        saveJSON(postsStoreKey, store);
+
+        // init dynamic behaviors for new card
+        initFavorites(); initLikes(); initComments();
+
+        // close modal and reset
+        toggleModal(false);
+        form.reset();
+        showToast('Post publicado', { type: 'success' });
+    });
+
+    /* Modal toggling */
+    const modal = document.getElementById('create-post-modal');
+    const btnOpenModal = document.querySelectorAll('#btn-create-post, #btn-create-post-mobile');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+    function toggleModal(show){ if (show){ modal.classList.remove('opacity-0','pointer-events-none'); modal.querySelector('.bg-white').classList.remove('scale-95'); setTimeout(()=>document.getElementById('post-text').focus(),120); } else { modal.classList.add('opacity-0','pointer-events-none'); modal.querySelector('.bg-white').classList.add('scale-95'); } }
+    btnOpenModal.forEach(b=>b && b.addEventListener('click', ()=> toggleModal(true)));
+    btnCloseModal && btnCloseModal.addEventListener('click', ()=> toggleModal(false));
+    modal && modal.addEventListener('click', e => { if (e.target === modal) toggleModal(false); });
+
+    /* Rain */
+    (function createRain(){
+        const rainContainer = document.getElementById('rain-left');
+        if (!rainContainer) return;
+        const drops = 6;
+        for (let i=0;i<drops;i++){
+            const d = document.createElement('span'); d.className='drop';
+            d.style.left = Math.round(Math.random()*80)+'px';
+            d.style.top = (Math.random()*-20)+'vh';
+            const scale = 0.8 + Math.random()*0.9;
+            d.style.width = Math.round(8*scale)+'px'; d.style.height = Math.round(12*scale)+'px';
+            d.style.setProperty('--fall-duration', (8 + Math.random()*6)+'s');
+            d.style.animationDuration = (8 + Math.random()*6)+'s';
+            d.style.animationDelay = '-'+(Math.random()*6)+'s';
+            rainContainer.appendChild(d);
+        }
+    })();
+
+    /* Utility */
+    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,"&#039;"); }
+
+    /* Initializers */
+    seedPostsStoreFromDOM();
+    initFavorites();
+    initLikes();
+    initComments();
+
+}); // DOMContentLoaded
+</script>
+
+</body>
+</html>

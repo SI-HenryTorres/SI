@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Programa Água Viva — Conexão e Transparência</title>
+  <meta name="description" content="Água Viva — Conexão, Transparência e Saneamento. Doe agora e acompanhe o impacto real." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'aqua-main': '#0077b6', // Azul ODS 6
+                    'impact-green': '#70e000', // Verde Ação/Impacto
+                    'aqua-light': '#90e0ef', // Ciano Claro (Fundo Secundário)
+                    'post-bg': '#f7f9fc',
+                    'muted': '#475569',
+                    'aqua-blend': '#00A499', // Cor de mistura Azul/Verde para destaque da ONG
+                }
+            }
+        }
+    }
+  </script>
+
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+
+  <style>
+    /* Estilos customizados da Landing Page */
+    :root{
+      --aqua-main: #0077b6;
+      --aqua-vibrant: #00b4d8;
+      --impact-green: #70e000;
+      --muted: #475569;
+      --bg: #ffffff;
+      --ease: cubic-bezier(.2,.9,.3,1);
+      --container-max: 1100px;
+    }
+    .container{ max-width:var(--container-max); margin-left:auto; margin-right:auto; padding-left:1rem; padding-right:1rem; }
+    
+    /* Ajuste de Header para consistência (removido border-bottom e espaçamento via nav) */
+    header { 
+        position: sticky; top:0; z-index:70; 
+        backdrop-filter: blur(6px); 
+        background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.80)); 
+    }
+    
+    .nav-inner { 
+        display:flex; justify-content:space-between; align-items:center; 
+        /* padding:14px 0; REMOVIDO: Espaçamento agora é via 'py-4' do Tailwind na tag <nav> */
+        gap:.75rem; 
+    }
+    .logo { display:flex; align-items:center; gap:.6rem; color:var(--aqua-main); font-weight:800; text-decoration:none; }
+    .nav-links { display:flex; gap:.5rem; align-items:center; }
+    .nav-links a { color: #0f172a; text-decoration:none; padding:.5rem .6rem; border-radius:8px; font-weight:600; transition: background .18s var(--ease), color .18s var(--ease); }
+    .nav-links a:hover, .nav-links a:focus { background: linear-gradient(90deg, rgba(0,180,216,0.06), rgba(112,224,0,0.04)); color: var(--aqua-main); outline:none; }
+
+    /* CTA button - Primary (DOE AGORA) */
+    .btn-cta-primary {
+      display:inline-flex; align-items:center; gap:.6rem;
+      background: var(--impact-green);
+      color: #fff;
+      padding:.8rem 1.6rem;
+      border-radius:10px;
+      font-size:1.15rem;
+      font-weight:800;
+      box-shadow: 0 12px 40px rgba(112,224,0,0.25);
+      cursor:pointer;
+      text-decoration:none;
+    }
+    .btn-cta-primary:hover { background: #66c400; transform: translateY(-2px); transition: transform .18s var(--ease); }
+
+    /* CTA button - Secondary (Seja Parceiro) */
+    .btn-cta-secondary {
+      display:inline-flex; align-items:center; gap:.6rem;
+      background: var(--aqua-main);
+      color: #fff;
+      padding:.6rem .95rem;
+      border-radius:10px;
+      font-weight:800;
+      box-shadow: 0 8px 30px rgba(0,119,182,0.18);
+      cursor:pointer;
+      text-decoration:none;
+    }
+    .btn-cta-secondary:hover { background: #006da8; transform: translateY(-2px); transition: transform .18s var(--ease); }
+    
+    /* Hero */
+    .hero { position:relative; min-height:62vh; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; color:#fff; background-color:var(--aqua-main); }
+    .hero__bg { position:absolute; inset:0; background-size:cover; background-position:center; z-index:0; filter: contrast(.96) saturate(1.02); will-change: transform; }
+    .hero__overlay { position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,119,182,0.72), rgba(0,119,182,0.52)); z-index:1; }
+    .hero-inner { position:relative; z-index:2; padding:2.25rem 1rem; max-width:920px; margin:0 auto; }
+    
+    /* TÍTULO COM PROFUNDIDADE/DINÂMICA */
+    .hero h1.depth-title {
+        font-size: 3.5rem; 
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        text-shadow: 
+            0 0 10px rgba(255,255,255,0.4), /* subtle glow */
+            0 4px 12px rgba(0,0,0,0.5), /* main drop shadow for depth */
+            0 8px 20px rgba(0, 119, 182, 0.8), /* shadow mimicking dark water depth */
+            0 0 3px #fff; /* sharp edge highlight */
+        line-height: 1.1;
+        margin: 0 0 0.2rem;
+    }
+    .hero h2.impact-highlight {
+        font-size: 1.8rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        color: var(--aqua-vibrant); /* Cor mais suave aqua clean */
+        text-shadow: 0 0 12px rgba(0, 180, 216, 0.8); /* Sombra ajustada para o glow */
+        margin-bottom: 1rem;
+    }
+    
+    @media(min-width:768px){ 
+        .hero h1{ font-size:4rem; } 
+        .hero h1.depth-title{ font-size: 5.5rem; } 
+        .hero h2.impact-highlight{ font-size: 2.25rem; }
+    }
+    
+    .hero p { margin:0 auto 1.1rem; color: rgba(255,255,255,0.96); font-weight:500; max-width:60ch; font-size:1.25rem; }
+    .hero-actions { margin-top:2rem; display:inline-flex; gap:1.2rem; align-items:center; justify-content:center; }
+
+    /* Section title highlight */
+    .section-title-wrap{ position:relative; display:inline-block; }
+    .title-highlight{ display:inline-block; padding:.55rem 1rem; border-radius:12px; color:#fff; font-weight:800; background: linear-gradient(90deg,var(--aqua-vibrant),var(--impact-green)); box-shadow: 0 12px 36px rgba(0,120,160,0.12); transform: translateY(-18%); }
+    .section-heading{ text-align:center; margin-bottom:2.5rem; color:var(--aqua-main); font-weight:800; }
+    
+    /* Decoration */
+    .rain-left{ position:fixed; left:6px; top:-10vh; width:100px; height:130vh; pointer-events:none; z-index:3; } 
+    .rain-left .drop{ position:absolute; width:10px; height:14px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(circle at 30% 20%, #ffffff 0%, rgba(255,255,255,0.6) 20%, rgba(0,180,216,0.95) 60%); box-shadow:0 6px 18px rgba(0,120,160,0.18); opacity:.95; transform: translateY(-10vh) scale(.9); animation: fall linear infinite; }
+    @keyframes fall { 0%{ transform: translateY(-10vh) scale(.6); opacity:0 } 12%{ opacity:1 } 100%{ transform: translateY(110vh) scale(1.05); opacity:.9 } }
+    .side-trees{ position:fixed; right:0; top:0; width:160px; height:100vh; pointer-events:none; z-index:0; background: linear-gradient(180deg, rgba(112,224,0,0.06), rgba(0,180,216,0.03)); opacity:.95; }
+    
+    /* Responsive hiding of decorations */
+    @media (max-width:768px){
+      .rain-left, .side-trees { display:none; }
+      .title-highlight { transform:none; padding:.45rem .85rem; }
+      .nav-links { display:none; } 
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rain-left" aria-hidden="true"></div>
+  <div class="side-trees" aria-hidden="true"></div>
+
+  <header role="banner" aria-label="Cabeçalho principal" class="shadow-md">
+    <nav class="container nav-inner px-6 py-4" role="navigation" aria-label="Menu principal">
+        <a href="attLandindPage.html" class="text-2xl font-bold text-aqua-main flex items-center">
+            <img src="https://cdn-icons-png.flaticon.com/128/4515/4515727.png" alt="Logo Água Viva" class="w-8 h-8 inline mr-2"> ÁGUA VIVA
+        </a>
+
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="attLandindPage.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Início</a>
+        <a href="comunidade.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Comunidade</a>
+        <a href="hub_ongs.html" class="text-slate-800 hover:text-aqua-main transition duration-300">ONGs</a>
+        <a href="attCadastro.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Seja um Parceiro</a>
+        <a href="conheçaOProjeto.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Conheça o Projeto</a>
+        <a href="abaEntrar_login.html" class="py-2 px-5 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">Entrar</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    
+    <section id="hero" class="hero" aria-label="Seção principal — Doação e Impacto">
+      <div class="hero__bg" style="background-image: url('https://e01-elmundo.uecdn.es/assets/multimedia/imagenes/2024/07/23/17217226179740.jpg');" aria-hidden="true"></div>
+      <div class="hero__overlay" aria-hidden="true"></div>
+
+      <div class="hero-inner container" data-aos="fade-up">
+        <h1 class="depth-title">PROGRAMA ÁGUA VIVA</h1>
+        <h2 class="impact-highlight">SANEAMENTO JÁ!</h2>
+        <p>Sua doação garante água potável e dignidade para as comunidades de Recife e Pernambuco, com transparência total e impacto rastreado em tempo real.</p>
+
+        <div class="hero-actions" role="region" aria-label="Ações principais">
+          <a href="doaçãoOng_ongs.html" class="btn-cta-primary" aria-label="Doe Agora para o Projeto Cisternas">
+            <i class="fas fa-hand-holding-water mr-2"></i> DOE AGORA
+          </a>
+          <a href="attCadastro.html" class="btn-cta-secondary" aria-label="Quero ser parceiro">
+            Seja Parceiro
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="depoimentos" class="py-16 md:py-24 bg-aqua-light/70" aria-labelledby="depoimentosTitle">
+      <div class="container">
+        <h2 id="depoimentosTitle" class="section-heading" data-aos="fade-up">
+          <span class="section-title-wrap"><span class="title-highlight" style="background: linear-gradient(90deg,var(--impact-green),var(--aqua-main));">Impacto que se Vê e Sente</span></span>
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-impact-green/50" data-aos="fade-up" data-aos-delay="100">
+                <i class="fas fa-user text-2xl text-impact-green mb-3"></i> <p class="text-slate-700 italic mb-4">
+                    "A água chegou hoje! Depois de 3 dias sem abastecimento aqui na Mustardinha, a comunidade está agradecida. A denúncia que fizemos no site realmente funcionou!"
+                </p>
+                <footer class="text-sm font-semibold text-impact-green">- Dona Maria, Recife/PE</footer>
+            </div>
+            
+             <div class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-aqua-main/50" data-aos="fade-up" data-aos-delay="200">
+                <i class="fas fa-users text-2xl text-aqua-main mb-3"></i> <p class="text-slate-700 italic mb-4">
+                    "O projeto de cisternas mudou tudo. Não precisamos mais depender da chuva. Isso é dignidade, viver sem preocupação é saúde ! Agradeço pela solução e visibilidade." 
+                </p>
+                <footer class="text-sm font-semibold text-aqua-main">- José Silva, Sertão de Pernambuco (Família Beneficiada)</footer>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-aqua-blend/50" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-handshake text-2xl text-aqua-blend mb-3"></i> <p class="text-slate-700 italic mb-4">
+                    "Ter um canal transparente para captar doações e mostrar o progresso em 85% da nossa meta é crucial para a confiança do doador. Dashboard intuitivo e preciso para parceiros."
+                </p>
+                <footer class="text-sm font-semibold text-aqua-blend">- Instituto Água Viva (ONG Verificada)</footer>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ganhos" class="py-16 md:py-24 bg-aqua-light/30" aria-labelledby="ganhosTitle">
+        <div class="container">
+            <h2 id="ganhosTitle" class="section-heading" data-aos="fade-up">
+              <span class="section-title-wrap"><span class="title-highlight" style="background: linear-gradient(90deg,var(--aqua-main),var(--impact-green));">Benefícios Mútuos de Fazer Parte</span></span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <div class="bg-post-bg p-8 rounded-xl shadow-lg border-t-4 border-aqua-main" data-aos="fade-right">
+                    <h3 class="text-2xl font-bold text-aqua-main mb-4"><i class="fas fa-user-check mr-2 text-aqua-main"></i> Para o Usuário (Doador)</h3>
+                    <ul class="space-y-3 text-slate-700 list-disc list-inside ml-4">
+                        <li><span class="font-semibold">Transparência Total:</span> Contribua com projetos verificados e acompanhe seu impacto em tempo real.</li>
+                        <li><span class="font-semibold">Informação Verificada:</span> Acesse infográficos e conteúdo exclusivo sobre conservação e saneamento.</li>
+                        <li><span class="font-semibold">Voz Ativa:</span> Faça denúncias de problemas de saneamento e conecte-se com projetos locais.</li>
+                    </ul>
+                    <a href="conheçaOProjeto.html" class="mt-6 inline-block text-aqua-main font-semibold hover:underline">Saiba Mais</a>
+                </div>
+
+                <div class="bg-post-bg p-8 rounded-xl shadow-lg border-t-4 border-impact-green" data-aos="fade-left">
+                    <h3 class="text-2xl font-bold text-impact-green mb-4"><i class="fas fa-building mr-2 text-impact-green"></i> Para a Empresa (Parceiro)</h3>
+                    <ul class="space-y-3 text-slate-700 list-disc list-inside ml-4">
+                        <li><span class="font-semibold">Métricas ESG/Impacto:</span> Acesse dashboards para gerir e baixar Relatórios ESG Completos e auditáveis.</li>
+                        <li><span class="font-semibold">Visibilidade e Marketing:</span> Ganhe visibilidade para seus projetos em nossa plataforma verificada.</li>
+                        <li><span class="font-semibold">Geração de Leads:</span> Acesso ao Módulo de Leads, coletando contatos de outras empresas e ONGs.</li>
+                    </ul>
+                    <a href="attCadastro.html" class="mt-6 inline-block text-impact-green font-semibold hover:underline">Quero Ser Parceiro</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="destaques" class="py-16 md:py-24 bg-post-bg" aria-labelledby="destaquesTitle">
+      <div class="container">
+        <h2 id="destaquesTitle" class="section-heading" data-aos="fade-up">
+          <span class="section-title-wrap"><span class="title-highlight" style="background: linear-gradient(90deg,var(--impact-green),var(--aqua-vibrant));">Projetos e Aliados em Ação</span></span>
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <div class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-aqua-main" data-aos="fade-right">
+                <div class="flex flex-col h-full"> 
+                    <header class="flex items-center space-x-4 mb-4">
+                        <div class="w-16 h-16 rounded-full border-2 border-aqua-main p-0.5 flex items-center justify-center">
+                            <i class="fa-solid fa-laptop-code text-3xl text-aqua-main" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-aqua-main">Tech Solutions S/A</h3>
+                            <p class="text-sm text-slate-500">Parceiro Prata • Patrocinador Prata</p>
+                        </div>
+                    </header>
+                    
+                    <div class="flex-grow">
+                        <p class="text-slate-700 mb-4">Contribuição: Parceiro de tecnologia que apoia a transparência e a gestão de dados dos projetos, contribuindo para o Relatório ESG.</p>
+                         <div class="bg-post-bg p-3 rounded-md border border-impact-green/50 my-3">
+                            <p class="text-sm font-semibold text-impact-green"><i class="fas fa-chart-line mr-1"></i> Apoiando 3 Projetos Ativos</p>
+                        </div>
+                    </div>
+                    
+                    <a href="perfilEmpresaDashBoard.html" class="w-full h-10 flex items-center justify-center bg-aqua-light text-aqua-main font-semibold rounded-lg hover:bg-aqua-main hover:text-white transition">Ver Perfil</a>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-impact-green" data-aos="fade-left">
+                <div class="flex flex-col h-full">
+                    <header class="flex items-center space-x-4 mb-4">
+                        <img class="w-16 h-16 rounded-full border-2 border-impact-green p-0.5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcHtpFK9RhtqT46aREqK0yJMKFbkYI7__ifA&s" alt="Logo ONG Modelo">
+                        <div>
+                            <h3 class="text-xl font-bold text-impact-green">Instituto Água Viva</h3>
+                            <p class="text-sm text-slate-500">Projeto Cisternas • <span class="font-bold">85% Concluído</span></p>
+                        </div>
+                    </header>
+                    
+                    <div class="flex-grow">
+                        <p class="text-slate-700 mb-4">Foco: Construção de cisternas e filtros de água potável no semiárido de Pernambuco, beneficiando mais de 800 famílias desde 2018.</p>
+                         <div class="w-full bg-aqua-light rounded-full h-4 mb-4">
+                            <div class="bg-impact-green h-4 rounded-full" style="width: 85%"></div>
+                         </div>
+                    </div>
+                    
+                    <div class="flex justify-between space-x-4">
+                        <a href="detalhesOng1_ongs.html" class="flex-1 h-10 flex items-center justify-center bg-aqua-light text-aqua-main font-semibold rounded-lg hover:bg-aqua-main hover:text-white transition">Detalhes</a>
+                        <a href="doaçãoOng_ongs.html" class="flex-1 h-10 flex items-center justify-center bg-impact-green text-white font-bold rounded-lg hover:bg-impact-green/80 transition">Doar Agora</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+      </div>
+    </section>
+    
+  </main>
+
+  <footer class="bg-slate-200 py-8">
+    <div class="container text-center text-slate-600">
+        <div class="flex flex-wrap justify-center space-x-4 mb-4 text-sm font-semibold">
+            <a href="abaEntrar_login.html" class="hover:text-aqua-main transition">Login</a>
+            <span class="text-slate-400">|</span>
+            <a href="attCadastro.html" class="hover:text-aqua-main transition">Cadastrar-se</a>
+            <span class="text-slate-400">|</span>
+            <a href="conheçaOProjeto.html" class="hover:text-aqua-main transition">Contato (contato@aguaviva.org)</a>
+            <span class="text-slate-400">|</span>
+            <a href="comunidade.html" class="hover:text-aqua-main transition">Comunidade</a>
+        </div>
+      <p>© 2025 Programa Água Viva — Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <a href="doaçãoOng_ongs.html" class="fixed bottom-6 right-6 z-60 btn-cta-primary shadow-2xl transition duration-300 transform hover:scale-105" aria-label="Doe Agora para o Projeto Cisternas">
+    <i class="fas fa-hand-holding-water mr-2"></i> DOE AGORA
+  </a>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="header-logic.js"></script> <script>
+    // Initialize AOS
+    document.addEventListener('DOMContentLoaded', function(){
+      if(window.AOS) AOS.init({ once: true, duration: 700, offset: 80, easing: 'ease-out-cubic' });
+    });
+
+    // Rain drops decorative (left)
+    (function createRain(){
+      const rain = document.querySelector('.rain-left');
+      if(!rain) return;
+      const drops = 12;
+      for(let i=0;i<drops;i++){
+        const d = document.createElement('span');
+        d.className = 'drop';
+        d.style.left = Math.round(Math.random() * 80) + 'px';
+        d.style.top = (Math.random() * -20) + 'vh';
+        const scale = 0.7 + Math.random() * 0.9;
+        d.style.width = Math.round(8 * scale) + 'px';
+        d.style.height = Math.round(12 * scale) + 'px';
+        const dur = 3.5 + Math.random() * 6.5;
+        d.style.animationDuration = dur + 's';
+        d.style.animationDelay = '-' + (Math.random() * 6) + 's';
+        rain.appendChild(d);
+      }
+    })();
+  </script>
+</body>
+</html>

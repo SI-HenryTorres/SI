@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil — Usuário Água Viva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuração customizada das cores
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'aqua-main': '#0077b6', // Azul ODS 6
+                        'impact-green': '#70e000', // Verde Ação/Impacto
+                        'aqua-light': '#90e0ef', // Ciano Claro (Fundo Secundário)
+                        'post-bg': '#f7f9fc',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="header-logic.js"></script> 
+</head>
+<body class="bg-post-bg text-slate-800 font-sans">
+
+    <header class="bg-white/90 backdrop-blur-sm shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="attLandindPage.html" class="text-2xl font-bold text-aqua-main flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/128/4515/4515727.png" alt="Logo Água Viva" class="w-8 h-8 inline mr-2"> ÁGUA VIVA
+            </a>
+            <div class="flex items-center space-x-6">
+                <a href="attLandindPage.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Início</a>
+                <a href="comunidade.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Comunidade</a>
+                <a href="hub_ongs.html" class="text-slate-800 hover:text-aqua-main transition duration-300">ONGs</a>
+                <button class="flex items-center py-2 px-3 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">
+                    <i class="fas fa-user-circle mr-2"></i> Meu Perfil
+                </button>
+                <a href="#" onclick="logoutUser()" class="text-slate-800 hover:text-aqua-main transition duration-300 font-semibold ml-2">
+                    <i class="fas fa-sign-out-alt mr-1"></i> Sair
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        <h1 class="text-4xl font-extrabold text-aqua-main mb-8">Olá, Henry!</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <aside class="lg:col-span-1 space-y-4">
+                <div class="bg-white p-6 rounded-lg shadow-xl border border-aqua-main/10">
+                    <img class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-impact-green p-0.5" src="https://source.unsplash.com/80x80/?portrait,smile" alt="Avatar do Usuário">
+                    <p class="text-center text-xl font-bold text-aqua-main mb-1">Usuário Teste</p>
+                    <p class="text-center text-sm text-slate-500 mb-4">CPF: ***.456.***-10</p>
+                    
+                    <a href="#" class="w-full block text-center py-2 bg-aqua-light text-aqua-main font-semibold rounded-lg hover:bg-aqua-main hover:text-white transition duration-300">
+                        <i class="fas fa-user-edit mr-2"></i> Editar Perfil
+                    </a>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow-md space-y-2">
+                    <p class="text-lg font-bold text-aqua-main mb-2">Seções</p>
+                    <a href="#historico" class="block py-2 px-3 bg-aqua-light text-aqua-main rounded-md font-semibold hover:bg-aqua-main/30 transition">
+                        <i class="fas fa-history mr-2"></i> Histórico de Doações
+                    </a>
+                    <a href="#projetos" class="block py-2 px-3 text-slate-700 rounded-md hover:bg-aqua-light hover:text-aqua-main transition">
+                        <i class="fas fa-star mr-2"></i> Acompanhar Projetos
+                    </a>
+                </div>
+            </aside>
+
+            <section class="lg:col-span-3 space-y-8">
+                
+                <div id="historico" class="bg-white p-6 rounded-lg shadow-xl border border-aqua-main/10">
+                    <h2 class="text-3xl font-bold text-aqua-main mb-4"><i class="fas fa-history mr-2"></i> Histórico de Doações</h2>
+                    <p class="text-slate-700 mb-4">Seu impacto em números. Acompanhe a transparência de cada centavo doado.</p>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-aqua-light">
+                            <thead class="bg-aqua-light">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-aqua-main uppercase tracking-wider">Projeto</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-aqua-main uppercase tracking-wider">Valor (R$)</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-aqua-main uppercase tracking-wider">Data</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-aqua-main uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-aqua-light">
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap">Instituto Água Viva - Cisternas</td>
+                                    <td class="px-4 py-3 whitespace-nowrap font-medium text-impact-green">150,00</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">15/09/2025</td>
+                                    <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-impact-green/20 text-impact-green">Concluída</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap">Saneamento Urbano Já! - Mapeamento</td>
+                                    <td class="px-4 py-3 whitespace-nowrap font-medium text-impact-green">50,00</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">01/08/2025</td>
+                                    <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-impact-green/20 text-impact-green">Concluída</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="projetos" class="bg-white p-6 rounded-lg shadow-xl border border-aqua-main/10">
+                    <h2 class="text-3xl font-bold text-aqua-main mb-4"><i class="fas fa-star mr-2"></i> Projetos Acompanhados</h2>
+                    <p class="text-slate-700 mb-6">Projetos, ONGs e posts da comunidade que você favoritou.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center bg-post-bg p-4 rounded-lg border border-impact-green/30">
+                            <div>
+                                <h3 class="font-bold text-impact-green">Instituto Água Viva</h3>
+                                <p class="text-sm text-slate-600">Construção de cisternas. **Progresso: 85%**</p>
+                            </div>
+                            <a href="detalhesOng1_ongs.html" class="py-1 px-3 bg-aqua-main text-white text-sm rounded-full hover:bg-aqua-main/80 transition">Ver Detalhes</a>
+                        </div>
+                        <div class="flex justify-between items-center bg-post-bg p-4 rounded-lg border border-aqua-main/30">
+                            <div>
+                                <h3 class="font-bold text-aqua-main">Post na Comunidade: Denúncia no Bairro X</h3>
+                                <p class="text-sm text-slate-600">Post de [Dona Maria]. Última atualização: Solução em andamento.</p>
+                            </div>
+                            <a href="comunidade.html" class="py-1 px-3 bg-aqua-main text-white text-sm rounded-full hover:bg-aqua-main/80 transition">Ver Post</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <script>
+        // Função de Logout (replicando a lógica do header-logic.js para este painel)
+        function logoutUser() {
+            window.localStorage.removeItem('isLoggedIn');
+            window.localStorage.removeItem('userType');
+            window.location.href = 'attLandindPage.html'; 
+        }
+    </script>
+    <script src="header-logic.js"></script>
+</body>
+</html>

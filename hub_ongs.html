@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONGs Água Viva — Projetos Verificados e Transparente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuração customizada das cores
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'aqua-main': '#0077b6', // Azul ODS 6
+                        'impact-green': '#70e000', // Verde Ação/Impacto
+                        'aqua-light': '#90e0ef', // Ciano Claro (Fundo Secundário)
+                        'post-bg': '#f7f9fc', // Fundo leve para os cards
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="header-logic.js"></script> 
+</head>
+<body class="bg-white text-slate-800 font-sans">
+
+    <header class="bg-white/90 backdrop-blur-sm shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="attLandindPage.html" class="text-2xl font-bold text-aqua-main flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/128/4515/4515727.png" alt="Logo Água Viva" class="w-8 h-8 inline mr-2"> ÁGUA VIVA
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="attLandindPage.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Início</a>
+                <a href="comunidade.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Comunidade</a>
+                <a href="hub_ongs.html" class="text-aqua-main font-semibold transition duration-300">ONGs</a>
+                <a href="attCadastro.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Seja um Parceiro</a>
+                <a href="conheçaOProjeto.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Conheça o Projeto</a>
+                <a href="abaEntrar_login.html" class="py-2 px-5 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">Entrar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        <h1 class="text-4xl font-extrabold text-aqua-main mb-4">ONGs: Conexão Cidadã</h1>
+        <p class="text-xl text-slate-600 mb-8">Conecte-se a projetos ativos e verificados. A transparência é garantida em cada contribuição.</p>
+        
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="bg-post-bg p-6 rounded-lg shadow-xl border-t-4 border-impact-green hover:shadow-impact-green/10 transition duration-300">
+                <header class="flex items-center space-x-4 mb-4">
+                    <img class="w-16 h-16 rounded-full border-2 border-impact-green p-0.5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcHtpFK9RhtqT46aREqK0yJMKFbkYI7__ifA&s" alt="Logo ONG Modelo">
+                    <div>
+                        <h2 class="text-xl font-bold text-impact-green">Instituto Água Viva</h2>
+                        <p class="text-sm text-slate-500">ONG Verificada <i class="fas fa-check-circle text-impact-green ml-1"></i></p>
+                    </div>
+                </header>
+                <p class="text-slate-700 mb-4">
+                    Área de Atuação: Construção de cisternas e filtros de água potável em comunidades semiáridas de Pernambuco.
+                </p>
+                <a href="detalhesOng1_ongs.html" class="block text-aqua-main font-semibold hover:underline mb-4">
+                    <i class="fas fa-info-circle mr-1"></i> Exibir Detalhes, Metas e Histórico
+                </a>
+                <a href="doaçãoOng_ongs.html" class="w-full inline-block text-center py-3 bg-aqua-main text-white font-bold rounded-lg hover:bg-aqua-main/80 transition shadow-lg">
+                    <i class="fas fa-hand-holding-usd mr-1"></i> Doar Agora
+                </a>
+            </div>
+
+            <div class="bg-post-bg p-6 rounded-lg shadow-xl border-t-4 border-aqua-main hover:shadow-aqua-main/10 transition duration-300">
+                <header class="flex items-center space-x-4 mb-4">
+                    <img class="w-16 h-16 rounded-full border-2 border-aqua-main p-0.5" src="https://www.sooretama.es.gov.br/uploads/files/saneamento-logo-renderizado-e1545068004567.png?1669145033574" alt="Logo ONG Saneamento">
+                    <div>
+                        <h2 class="text-xl font-bold text-aqua-main">Saneamento Urbano Já!</h2>
+                        <p class="text-sm text-slate-500">ONG Verificada <i class="fas fa-check-circle text-impact-green ml-1"></i></p>
+                    </div>
+                </header>
+                <p class="text-slate-700 mb-4">
+                    Área de Atuação: Educação sanitária e mapeamento de redes de esgoto em periferias de Recife/PE.
+                </p>
+                <a href="#" class="block text-aqua-main font-semibold hover:underline mb-4">
+                    <i class="fas fa-info-circle mr-1"></i> Exibir Detalhes, Metas e Histórico
+                </a>
+                <button class="w-full inline-block text-center py-3 bg-aqua-main text-white font-bold rounded-lg hover:bg-aqua-main/80 transition shadow-lg">
+                    <i class="fas fa-hand-holding-usd mr-1"></i> Doar Agora
+                </button>
+            </div>
+
+            <div class="bg-post-bg p-6 rounded-lg shadow-xl border-t-4 border-aqua-light hover:shadow-aqua-main/10 transition duration-300">
+                <header class="flex items-center space-x-4 mb-4">
+                    <img class="w-16 h-16 rounded-full border-2 border-aqua-light p-0.5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQatwiUH9r2ctq48e28GcgcNGozrZLr3PgHEg&s" alt="Logo ONG Saúde">
+                    <div>
+                        <h2 class="text-xl font-bold text-aqua-main">Saúde + Saneamento</h2>
+                        <p class="text-sm text-slate-500">ONG Verificada <i class="fas fa-check-circle text-impact-green ml-1"></i></p>
+                    </div>
+                </header>
+                <p class="text-slate-700 mb-4">
+                    Área de Atuação: Combate a doenças relacionadas à falta de saneamento, foco em crianças.
+                </p>
+                <a href="#" class="block text-aqua-main font-semibold hover:underline mb-4">
+                    <i class="fas fa-info-circle mr-1"></i> Exibir Detalhes, Metas e Histórico
+                </a>
+                <button class="w-full inline-block text-center py-3 bg-aqua-main text-white font-bold rounded-lg hover:bg-aqua-main/80 transition shadow-lg">
+                    <i class="fas fa-hand-holding-usd mr-1"></i> Doar Agora
+                </button>
+                <a href="#" class=>
+            </div>
+
+        </section>
+
+    </main>
+</body>
+</html>

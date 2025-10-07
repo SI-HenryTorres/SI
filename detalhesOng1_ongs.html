@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Água Viva — Projeto de Cisternas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuração customizada das cores
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'aqua-main': '#0077b6', // Azul ODS 6
+                        'impact-green': '#70e000', // Verde Ação/Impacto
+                        'aqua-light': '#90e0ef', // Ciano Claro (Fundo Secundário)
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body class="bg-white text-slate-800 font-sans">
+
+    <header class="bg-white/90 backdrop-blur-sm shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="attLandindPage.html" class="text-2xl font-bold text-aqua-main flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/128/4515/4515727.png" alt="Logo Água Viva" class="w-8 h-8 inline mr-2"> ÁGUA VIVA
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="attLandindPage.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Início</a>
+                <a href="comunidade.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Comunidade</a>
+                <a href="hub_ongs.html" class="text-aqua-main font-semibold transition duration-300">ONGs</a>
+                <a href="attCadastro.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Seja um Parceiro</a>
+                <a href="conheçaOProjeto.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Conheça o Projeto</a>
+                <a href="abaEntrar_login.html" class="py-2 px-5 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">Entrar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        
+        <div class="max-w-4xl mx-auto">
+            
+            <header class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8 bg-aqua-light/30 p-6 rounded-xl shadow-lg mb-8">
+                <img class="w-24 h-24 rounded-full border-4 border-impact-green shadow-md" src="https://source.unsplash.com/100x100/?water-drop,logo" alt="Logo Instituto Água Viva">
+                <div>
+                    <h1 class="text-4xl font-extrabold text-impact-green">Instituto Água Viva</h1>
+                    <p class="text-xl text-slate-700">ONG Verificada - Projetos Sustentáveis no Nordeste</p>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <section class="lg:col-span-2 space-y-6">
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-aqua-main/10">
+                        <h2 class="text-2xl font-bold text-aqua-main mb-3">Sobre o Projeto: Cisternas para o Semiárido</h2>
+                        <p class="text-slate-700 mb-4">
+                            O Instituto Água Viva trabalha na construção de cisternas de placa e na distribuição de filtros de água potável, garantindo o acesso à água segura para famílias em comunidades rurais. Nosso foco atual é Pernambuco, levando dignidade e saúde para o sertão.
+                        </p>
+                        
+                        <h3 class="text-xl font-semibold text-impact-green mt-4 mb-2">Metas e Impacto Histórico</h3>
+                        <ul class="list-disc list-inside text-slate-700 ml-4 space-y-1">
+                            <li>Meta Atual: Construir 50 novas cisternas até o final do ano.</li>
+                            <li>Impacto Histórico: Mais de 800 famílias já beneficiadas desde 2018.</li>
+                            <li>Taxa de Sucesso: 95% dos projetos concluídos no prazo com relatórios auditados.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-aqua-light/50 p-6 rounded-lg shadow-md border border-aqua-main/20">
+                         <h2 class="text-2xl font-bold text-aqua-main mb-3">Progresso Atual do Projeto (Transparência)</h2>
+                         <div class="flex justify-between mb-2 font-medium text-slate-700">
+                             <span>Valor Captado: R$ 85.000 / R$ 100.000</span>
+                             <span class="text-impact-green">85% Concluído</span>
+                         </div>
+                         <div class="w-full bg-white rounded-full h-4">
+                             <div class="bg-impact-green h-4 rounded-full shadow-inner" style="width: 85%"></div>
+                         </div>
+                         <p class="text-sm text-slate-500 mt-3">Próxima meta: Compra de cimento e areia para 10 cisternas.</p>
+                    </div>
+
+                </section>
+
+                <aside class="lg:col-span-1 space-y-6">
+                    
+                    <a href="doaçãoOng_ongs.html" class="w-full block text-center py-4 bg-impact-green text-white text-xl font-bold rounded-xl hover:bg-impact-green/80 transition duration-300 shadow-xl shadow-impact-green/30">
+                        <i class="fas fa-hand-holding-heart mr-2"></i> DOE AGORA
+                    </a>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-aqua-main/10">
+                        <h3 class="text-xl font-bold text-aqua-main mb-4">Empresas Parceiras (Apoiadores)</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center space-x-3">
+                                <i class="fas fa-handshake text-impact-green"></i>
+                                <span class="text-slate-700 font-medium">Tech Solutions (Patrocinador Prata)</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fas fa-handshake text-impact-green"></i>
+                                <span class="text-slate-700 font-medium">Construtora Esperança (Doação de Materiais)</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fas fa-handshake text-impact-green"></i>
+                                <span class="text-slate-700 font-medium">Comunidade Água Viva (Apoio Local)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+    <script src="header-logic.js"></script> 
+</body>
+</html>

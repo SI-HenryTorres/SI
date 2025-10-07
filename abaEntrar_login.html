@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar — Acesse sua Conta Água Viva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuração customizada das cores
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'aqua-main': '#0077b6', // Azul ODS 6
+                        'impact-green': '#70e000', // Verde Ação/Impacto
+                        'aqua-light': '#90e0ef', // Ciano Claro (Fundo Secundário)
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body class="bg-white text-slate-800 font-sans">
+
+    <header class="bg-white/90 backdrop-blur-sm shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="attLandindPage.html" class="text-2xl font-bold text-aqua-main flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/128/4515/4515727.png" alt="Logo Água Viva" class="w-8 h-8 inline mr-2"> ÁGUA VIVA
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="attLandindPage.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Início</a>
+                <a href="comunidade.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Comunidade</a>
+                <a href="hub_ongs.html" class="text-slate-800 hover:text-aqua-main transition duration-300">ONGs</a>
+                <a href="attCadastro.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Seja um Parceiro</a>
+                <a href="conheçaOProjeto.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Conheça o Projeto</a>
+                <a href="abaEntrar_login.html" class="py-2 px-5 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">Entrar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex items-center justify-center py-12 md:py-24 bg-aqua-light/10">
+        <div id="login-container" class="w-full max-w-md mx-auto">
+            
+            <div class="bg-white border border-aqua-main/20 p-8 rounded-lg shadow-xl">
+
+                <div id="choice-step">
+                    <h2 class="text-2xl font-bold text-center text-aqua-main mb-2">Acesse Sua Conta</h2>
+                    <p class="text-center text-slate-600 mb-6">Escolha o seu perfil para continuar:</p>
+                    <div class="flex flex-col space-y-4">
+                        <button id="btn-login-user" class="w-full py-3 px-4 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">Sou um Usuário (CPF)</button>
+                        <button id="btn-login-company" class="w-full py-3 px-4 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">Sou uma Empresa (CNPJ)</button>
+                    </div>
+                </div>
+
+                <form id="form-login-cpf" class="hidden space-y-4">
+                    <h2 class="text-2xl font-bold text-center text-aqua-main mb-6">Login de Usuário</h2>
+                    <div>
+                        <label for="login-cpf-email" class="block text-sm font-medium text-slate-800 mb-1">Email / CPF</label>
+                        <input type="text" id="login-cpf-email" class="w-full px-3 py-2 bg-slate-100 border border-aqua-main/40 rounded-md text-slate-800 focus:outline-none focus:ring-2 focus:ring-impact-green" required>
+                    </div>
+                    <div>
+                        <label for="login-cpf-password" class="block text-sm font-medium text-slate-800 mb-1">Senha</label>
+                        <input type="password" id="login-cpf-password" class="w-full px-3 py-2 bg-slate-100 border border-aqua-main/40 rounded-md text-slate-800 focus:outline-none focus:ring-2 focus:ring-impact-green" required>
+                    </div>
+                    <button type="submit" class="w-full py-3 mt-4 bg-impact-green text-white rounded-lg hover:bg-impact-green/80 transition duration-300 font-semibold">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Entrar
+                    </button>
+                    <p class="text-center text-sm">
+                        <a href="#esqueci-senha" class="text-slate-600 hover:text-aqua-main transition">Esqueci minha Senha</a>
+                    </p>
+                </form>
+
+                <form id="form-login-cnpj" class="hidden space-y-4">
+                    <h2 class="text-2xl font-bold text-center text-aqua-main mb-6">Login de Parceiro</h2>
+                     <div>
+                        <label for="login-cnpj-email" class="block text-sm font-medium text-slate-800 mb-1">Email Comercial / CNPJ</label>
+                        <input type="text" id="login-cnpj-email" class="w-full px-3 py-2 bg-slate-100 border border-aqua-main/40 rounded-md text-slate-800 focus:outline-none focus:ring-2 focus:ring-impact-green" required>
+                    </div>
+                    <div>
+                        <label for="login-cnpj-password" class="block text-sm font-medium text-slate-800 mb-1">Senha</label>
+                        <input type="password" id="login-cnpj-password" class="w-full px-3 py-2 bg-slate-100 border border-aqua-main/40 rounded-md text-slate-800 focus:outline-none focus:ring-2 focus:ring-impact-green" required>
+                    </div>
+                    <button type="submit" class="w-full py-3 mt-4 bg-impact-green text-white rounded-lg hover:bg-impact-green/80 transition duration-300 font-semibold">
+                         <i class="fas fa-sign-in-alt mr-2"></i> Entrar
+                    </button>
+                     <p class="text-center text-sm">
+                        <a href="#esqueci-senha" class="text-slate-600 hover:text-aqua-main transition">Esqueci minha Senha</a>
+                    </p>
+                </form>
+                
+                <div class="text-center mt-6 pt-4 border-t border-aqua-light">
+                    <p class="text-slate-600 mb-2">Ainda não tem conta?</p>
+                    <a href="attCadastro.html" class="text-lg font-bold text-aqua-main hover:text-impact-green transition">
+                        <i class="fas fa-user-plus mr-2"></i> Cadastre-se Agora!
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const choiceStep = document.getElementById('choice-step');
+            const btnLoginUser = document.getElementById('btn-login-user');
+            const btnLoginCompany = document.getElementById('btn-login-company');
+            
+            const formLoginCpf = document.getElementById('form-login-cpf');
+            const formLoginCnpj = document.getElementById('form-login-cnpj');
+
+            // Função para alternar a exibição dos formulários
+            const showForm = (formToShow, formToHide) => {
+                choiceStep.classList.add('hidden');
+                formToShow.classList.remove('hidden');
+                formToHide.classList.add('hidden');
+            };
+
+            // Evento para mostrar formulário de Usuário (CPF)
+            btnLoginUser.addEventListener('click', () => {
+                showForm(formLoginCpf, formLoginCnpj);
+            });
+
+            // Evento para mostrar formulário de Empresa (CNPJ)
+            btnLoginCompany.addEventListener('click', () => {
+                showForm(formLoginCnpj, formLoginCpf);
+            });
+
+            // *** FLUXO DE REDIRECIONAMENTO CORRIGIDO ***
+            
+            // 1. Login de Usuário (CPF) -> Meu Perfil
+            formLoginCpf.addEventListener('submit', (event) => {
+                event.preventDefault(); 
+                window.localStorage.setItem('isLoggedIn', 'true'); // MARCA O ESTADO
+                window.localStorage.setItem('userType', 'CPF'); // MARCA O TIPO DE USUÁRIO
+                alert('Login de Usuário realizado com sucesso! Redirecionando para o Meu Perfil...');
+                window.location.href = "perfilUsuario.html"; // REDIRECIONAMENTO PARA O ARQUIVO CORRETO
+            });
+
+            // 2. Login de Empresa (CNPJ) -> Dashboard Parceiro
+            formLoginCnpj.addEventListener('submit', (event) => {
+                event.preventDefault(); 
+                window.localStorage.setItem('isLoggedIn', 'true'); // MARCA O ESTADO
+                window.localStorage.setItem('userType', 'CNPJ'); // MARCA O TIPO DE USUÁRIO
+                alert('Login de Parceiro realizado com sucesso! Redirecionando para o Dashboard...');
+                window.location.href = "perfilEmpresaDashBoard.html"; // REDIRECIONAMENTO PARA O ARQUIVO CORRETO
+            });
+            
+            // Simulação da tela Esqueci a Senha
+            document.querySelectorAll('a[href="#esqueci-senha"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('Você seria redirecionado para a página de recuperação de senha. Por favor, insira seu email/documento para receber as instruções.');
+                });
+            });
+        });
+    </script>
+    <script src="header-logic.js"></script> 
+
+
+</body>
+</html>
