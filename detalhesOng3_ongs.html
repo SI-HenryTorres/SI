@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Saúde + Saneamento — Detalhes | Água Viva</title>
+
+  <!-- Tailwind (mantive o padrão do site) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'aqua-main': '#0077b6',
+            'impact-green': '#70e000',
+            'aqua-light': '#90e0ef',
+            'post-bg': '#f7f9fc',
+            'accent-yellow': '#FFD93D'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --aqua-main: #0077b6;
+      --impact-green: #70e000;
+      --accent-yellow: #FFD93D;
+    }
+
+    /* Title chip consistent with AquaClean theme */
+    .title-chip {
+      display:inline-block;
+      padding:.5rem .9rem;
+      border-radius:12px;
+      font-weight:900;
+      color:#fff;
+      background: linear-gradient(90deg,#003b5c 0%, #00b4d8 100%);
+      box-shadow: 0 12px 36px rgba(0,120,160,0.12);
+    }
+
+    .soft-sep {
+      height:4px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(0,180,216,0.12), rgba(112,224,0,0.08));
+      margin-top:.75rem;
+      margin-bottom:1.15rem;
+    }
+
+    .card-anim { transition: transform .24s cubic-bezier(.2,.9,.3,1), box-shadow .24s ease; }
+    .card-anim:hover { transform: translateY(-6px); box-shadow: 0 22px 48px rgba(3,45,65,0.08); }
+
+    .btn-donate { background: linear-gradient(90deg,#00b4d8,#0077b6); color: #fff; box-shadow: 0 12px 36px rgba(0,120,160,0.12); }
+    .btn-follow { border-radius:.6rem; padding:.45rem .75rem; font-weight:700; border:1px solid rgba(0,119,182,0.08); background:white; color:var(--aqua-main); }
+    .btn-follow.following { background: var(--impact-green); color: #052018; border-color: rgba(0,0,0,0.04); box-shadow: 0 10px 26px rgba(112,224,0,0.06); }
+
+    .gallery img { border-radius:.55rem; object-fit:cover; width:100%; height:160px; }
+    @media (max-width:768px) { .gallery img { height:110px; } }
+
+    .stat { font-weight:800; font-size:1.9rem; color:var(--aqua-main); }
+    .stat-label { color:#0f172a; font-weight:600; margin-top:.15rem; font-size:.9rem; }
+
+    .toast-portal { position: fixed; right: 1rem; bottom: 1rem; z-index: 99999; display:flex; flex-direction:column; gap:0.6rem; align-items:flex-end; pointer-events:none; }
+    .toast { pointer-events:auto; min-width:200px; max-width:380px; background:white; border-left:4px solid var(--aqua-main); padding:.75rem 1rem; border-radius:.6rem; box-shadow:0 14px 38px rgba(3,45,65,0.14); display:flex; gap:.6rem; align-items:center; font-weight:700; color:#0f172a; }
+    .toast.success { border-left-color: var(--impact-green); }
+    .toast.warn { border-left-color: #f59e0b; }
+
+    /* Breadcrumb small */
+    .breadcrumb a { color: #475569; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; color: var(--aqua-main); }
+
+    /* Modal backdrop */
+    .modal-backdrop { background: rgba(2,6,23,0.6); }
+    .modal-card { border-radius:.85rem; max-width:720px; width:100%; }
+  </style>
+</head>
+<body class="bg-white text-slate-800 antialiased">
+
+  <!-- Header (consistent) -->
+  <header class="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-aqua-light/30">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="attLandindPage.html" class="flex items-center gap-3 text-aqua-main font-bold text-2xl">
+        <img src="https://cdn-icons-png.flaticon.com/128/4515/4515727.png" alt="Água Viva" class="w-8 h-8">
+        ÁGUA VIVA
+      </a>
+
+      <div class="hidden md:flex items-center space-x-6 header-nav">
+        <a href="attLandindPage.html#hero" class="text-slate-800 hover:text-aqua-main transition duration-200">Início</a>
+        <a href="comunidade.html" class="text-slate-800 hover:text-aqua-main transition duration-200">Comunidade</a>
+        <a href="hub_ongs.html" class="text-aqua-main font-semibold transition duration-200">ONGs</a>
+        <a href="attCadastro.html" class="text-slate-800 hover:text-aqua-main transition duration-200">Seja um Parceiro</a>
+        <a href="conheçaOProjeto.html" class="text-slate-800 hover:text-aqua-main transition duration-200">Conheça o Projeto</a>
+        <a href="abaEntrar_login.html" class="py-2 px-4 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-200 font-semibold">Entrar</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container mx-auto px-6 py-10">
+    <!-- Breadcrumb + Title -->
+    <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <nav class="text-sm text-slate-500 breadcrumb mb-2" aria-label="Breadcrumb">
+          <a href="hub_ongs.html" class="hover:underline">ONGs</a>
+          <span class="mx-2">/</span>
+          <span class="font-semibold text-slate-700">Saúde + Saneamento</span>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">
+          <span class="title-chip">Saúde + Saneamento</span>
+        </h1>
+        <div class="soft-sep"></div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="btn-follow" class="btn-follow text-sm card-anim" aria-pressed="false">
+          <i class="fa-regular fa-heart mr-2"></i> Seguir
+        </button>
+
+        <button id="btn-donate" class="btn-donate px-4 py-2 rounded-lg text-sm card-anim">
+          <i class="fa-solid fa-hand-holding-dollar mr-2"></i> Doar Agora
+        </button>
+
+        <a href="hub_ongs.html" class="text-sm px-4 py-2 border rounded-lg hover:bg-slate-50 transition">Voltar</a>
+      </div>
+    </div>
+
+    <!-- Hero / Overview -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-8">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="bg-post-bg p-6 rounded-xl shadow-md card-anim">
+          <div class="flex gap-5 items-start">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQatwiUH9r2ctq48e28GcgcNGozrZLr3PgHEg&s" alt="Saúde + Saneamento" class="w-28 h-28 rounded-lg object-cover border-2 border-aqua-main p-1">
+            <div class="flex-1">
+              <h2 class="text-2xl font-bold text-aqua-main">Saúde + Saneamento</h2>
+              <p class="text-slate-700 mt-1">Integração de estratégias de saúde pública e saneamento para reduzir doenças e melhorar higiene comunitária.</p>
+
+              <div class="mt-4 flex flex-wrap gap-3">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-aqua-light/40 text-aqua-main font-semibold text-sm">
+                  <i class="fa-solid fa-map-location-dot"></i> Regiões: Recife e entorno
+                </span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-impact-green/10 text-impact-green font-semibold text-sm">
+                  <i class="fa-solid fa-hospital"></i> Saúde Comunitária
+                </span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-post-bg text-slate-600 font-semibold text-sm">
+                  <i class="fa-solid fa-hand-holding-water"></i> Ações práticas
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+            <div>
+              <h3 class="text-sm font-semibold text-slate-600">Objetivo</h3>
+              <p class="text-slate-800 mt-1">Reduzir internações por doenças hídricas através de intervenções de saneamento e educação em saúde.</p>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold text-slate-600">Meta 2025</h3>
+              <p class="text-slate-800 mt-1">Implementar 200 estações de higienização e formar 80 agentes comunitários.</p>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold text-slate-600">Progresso</h3>
+              <div class="w-full bg-slate-100 rounded-full h-3 mt-2 overflow-hidden">
+                <div id="progress-bar" class="h-3 rounded-full bg-impact-green" style="width: 48%; transition: width .9s ease"></div>
+              </div>
+              <p class="text-xs text-slate-600 mt-2">48% concluído</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activities & Results -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white p-6 rounded-xl shadow card-anim">
+            <h3 class="text-lg font-bold text-aqua-main mb-3">Atividades & Resultados</h3>
+            <ul class="list-disc pl-5 text-slate-700 space-y-2">
+              <li>Instalação de estações de higienização em 60 escolas.</li>
+              <li>Treinamento de agentes comunitários em higiene e detecção precoce.</li>
+              <li>Campanhas de vacinação e monitoramento de qualidade da água.</li>
+              <li>Relatórios mensais de indicadores de saúde.</li>
+            </ul>
+
+            <div class="mt-6 grid grid-cols-3 gap-3 text-center">
+              <div>
+                <div class="stat text-aqua-main" data-target="60">60</div>
+                <div class="stat-label">Escolas atendidas</div>
+              </div>
+              <div>
+                <div class="stat text-impact-green" data-target="80">80</div>
+                <div class="stat-label">Agentes formados</div>
+              </div>
+              <div>
+                <div class="stat text-slate-700" data-target="4200">4.2k</div>
+                <div class="stat-label">Pessoas impactadas</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow card-anim">
+            <h3 class="text-lg font-bold text-aqua-main mb-3">Projetos em Andamento</h3>
+            <ol class="space-y-4 text-slate-700">
+              <li>
+                <div class="flex justify-between items-start">
+                  <div><strong>Higienização Escolar</strong><div class="text-xs text-slate-500">Estações + treinamento</div></div>
+                  <div class="text-xs text-slate-600">48%</div>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 mt-2 overflow-hidden"><div class="h-2 rounded-full bg-aqua-main" style="width:48%"></div></div>
+              </li>
+
+              <li>
+                <div class="flex justify-between items-start">
+                  <div><strong>Monitoramento de Água</strong><div class="text-xs text-slate-500">Sensores e coletas</div></div>
+                  <div class="text-xs text-slate-600">52%</div>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 mt-2 overflow-hidden"><div class="h-2 rounded-full bg-impact-green" style="width:52%"></div></div>
+              </li>
+            </ol>
+
+            <a href="#contact" class="inline-block mt-4 text-aqua-main font-semibold hover:underline">Contato para parcerias</a>
+          </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="bg-white p-6 rounded-xl shadow card-anim">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-aqua-main">Galeria</h3>
+            <small class="text-slate-500">Momentos das ações</small>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 gallery">
+            <img src="https://source.unsplash.com/800x600/?handwashing,community" alt="Galeria 1" loading="lazy" />
+            <img src="https://source.unsplash.com/800x600/?healthcare,clinic" alt="Galeria 2" loading="lazy" />
+            <img src="https://source.unsplash.com/800x600/?water,testing" alt="Galeria 3" loading="lazy" />
+            <img src="https://source.unsplash.com/800x600/?education,children" alt="Galeria 4" loading="lazy" />
+          </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="bg-post-bg p-6 rounded-xl shadow card-anim mt-6">
+          <h3 class="text-lg font-bold text-aqua-main mb-3">Depoimentos</h3>
+          <blockquote class="italic text-slate-700">"Ações de higiene nas escolas reduziram faltas por gastroenterite." — <strong>Prof. Ana</strong></blockquote>
+          <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-md border">
+              <p class="text-slate-700">"Treinamento mudou a rotina da comunidade." — <strong>Agente Pedro</strong></p>
+            </div>
+            <div class="bg-white p-4 rounded-md border">
+              <p class="text-slate-700">"Monitoramento melhorou a confiança na água local." — <strong>Moradora Carla</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: CTAs & contact -->
+      <aside class="space-y-6">
+        <div class="bg-white p-5 rounded-xl shadow card-anim">
+          <h4 class="text-lg font-bold text-aqua-main mb-3">Resumo Rápido</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center"><div class="text-slate-600">Escolas</div><div class="text-lg font-bold text-aqua-main">60</div></div>
+            <div class="flex justify-between items-center"><div class="text-slate-600">Agentes</div><div class="text-lg font-bold text-impact-green">80</div></div>
+            <div class="flex justify-between items-center"><div class="text-slate-600">Pessoas</div><div class="text-lg font-bold text-slate-700">4.2k</div></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow card-anim">
+          <h4 class="text-lg font-bold text-aqua-main mb-2">Apoie este projeto</h4>
+          <p class="text-slate-700 text-sm mb-4">Doações direcionadas para kits de higiene, testes de água e transporte de equipes.</p>
+          <div class="space-y-3">
+            <button id="btn-donate-side" class="w-full btn-donate px-4 py-2 rounded-lg">Doar R$ 25</button>
+            <button id="btn-donate-side-2" class="w-full border border-slate-200 rounded-lg py-2 hover:bg-slate-50">Doar valor personalizado</button>
+          </div>
+        </div>
+
+        <div id="contact" class="bg-post-bg p-5 rounded-xl shadow card-anim">
+          <h4 class="text-lg font-bold text-aqua-main mb-3">Contato</h4>
+          <p class="text-slate-700 text-sm mb-3">Fale com a coordenação do Saúde + Saneamento — resposta em até 48h.</p>
+
+          <form id="contact-form" class="space-y-3">
+            <input type="text" id="cname" placeholder="Seu nome" class="w-full p-3 rounded-md border border-slate-200" required />
+            <input type="email" id="cemail" placeholder="Seu e-mail" class="w-full p-3 rounded-md border border-slate-200" required />
+            <textarea id="cmessage" rows="4" placeholder="Mensagem" class="w-full p-3 rounded-md border border-slate-200" required></textarea>
+            <div class="flex gap-2">
+              <button type="submit" class="flex-1 btn-donate px-4 py-2 rounded-lg">Enviar Mensagem</button>
+              <a href="mailto:contato@saudesaneamento.org" class="px-4 py-2 rounded-lg border text-slate-700">E-mail</a>
+            </div>
+          </form>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow card-anim">
+          <h4 class="text-md font-bold text-aqua-main mb-3">Parceiros</h4>
+          <div class="flex items-center gap-3">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_unesco.png" alt="Parceiro 1" class="w-14 h-10 object-contain">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/Logo_unicef.png" alt="Parceiro 2" class="w-14 h-10 object-contain">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Logo_example.png" alt="Parceiro 3" class="w-14 h-10 object-contain opacity-60">
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- Modal root for gallery/lightbox -->
+  <div id="modal-root" class="fixed inset-0 z-60 hidden items-center justify-center modal-backdrop" aria-hidden="true">
+    <div class="bg-white modal-card p-4 md:p-6 shadow-2xl">
+      <div id="modal-content"></div>
+      <div class="mt-4 flex justify-end">
+        <button id="modal-close" class="px-4 py-2 rounded bg-slate-100 hover:bg-slate-200">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donate modal -->
+  <div id="donate-modal" class="fixed inset-0 z-70 hidden items-center justify-center modal-backdrop">
+    <div class="bg-white p-6 modal-card shadow-2xl">
+      <h3 class="text-xl font-bold text-aqua-main">Doação — Saúde + Saneamento</h3>
+      <p class="text-slate-700 mt-2">Obrigado! Esta é uma simulação de fluxo. Em produção, integre Pix/Checkout.</p>
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-2">
+        <button class="py-2 px-3 rounded bg-impact-green hover:bg-impact-green/90 text-white" data-amount="25">Doar R$25</button>
+        <button class="py-2 px-3 rounded bg-aqua-main hover:bg-aqua-main/90 text-white" data-amount="50">Doar R$50</button>
+        <button class="py-2 px-3 rounded bg-slate-100 hover:bg-slate-200" id="donate-custom">Valor personalizado</button>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button id="donate-cancel" class="px-4 py-2 rounded bg-slate-100 hover:bg-slate-200">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast portal -->
+  <div class="toast-portal" id="toast-portal" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    // Lightweight interactions: follow, donate, gallery lightbox, contact, counters
+    const FOLLOW_KEY = 'aguaViva_follow_SaudeSaneamento';
+
+    const getFollowing = () => localStorage.getItem(FOLLOW_KEY) === '1';
+    const setFollowing = (v) => localStorage.setItem(FOLLOW_KEY, v ? '1' : '0');
+
+    const btnFollow = document.getElementById('btn-follow');
+    function updateFollowUI() {
+      const isFollowing = getFollowing();
+      if (isFollowing) {
+        btnFollow.classList.add('following');
+        btnFollow.innerHTML = '<i class="fa-solid fa-heart mr-2"></i> Seguindo';
+        btnFollow.setAttribute('aria-pressed','true');
+      } else {
+        btnFollow.classList.remove('following');
+        btnFollow.innerHTML = '<i class="fa-regular fa-heart mr-2"></i> Seguir';
+        btnFollow.setAttribute('aria-pressed','false');
+      }
+    }
+    btnFollow && btnFollow.addEventListener('click', (e) => {
+      e.preventDefault();
+      const now = !getFollowing();
+      // simple "login required" simulation: in real app require auth
+      // For now we accept toggling
+      setFollowing(now);
+      updateFollowUI();
+      toast(now ? 'Você está seguindo Saúde + Saneamento' : 'Você deixou de seguir');
+    });
+    updateFollowUI();
+
+    // Donate modal logic
+    const donateModal = document.getElementById('donate-modal');
+    const modalRoot = document.getElementById('modal-root');
+
+    function openDonateModal(){ donateModal.classList.remove('hidden'); donateModal.classList.add('flex'); }
+    function closeDonateModal(){ donateModal.classList.add('hidden'); donateModal.classList.remove('flex'); }
+
+    document.getElementById('btn-donate')?.addEventListener('click', openDonateModal);
+    document.getElementById('btn-donate-side')?.addEventListener('click', openDonateModal);
+    document.getElementById('btn-donate-side-2')?.addEventListener('click', openDonateModal);
+    document.getElementById('donate-cancel')?.addEventListener('click', closeDonateModal);
+
+    document.querySelectorAll('[data-amount]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const amount = btn.dataset.amount;
+        closeDonateModal();
+        toast('Obrigado! Simulação de doação: R$' + amount, 3000);
+      });
+    });
+    document.getElementById('donate-custom')?.addEventListener('click', () => {
+      const val = prompt('Digite o valor em R$ (ex: 30)');
+      if (!val) return;
+      closeDonateModal();
+      toast('Obrigado! Simulação de doação: R$' + val, 3000);
+    });
+
+    // Gallery lightbox
+    document.querySelectorAll('.gallery img').forEach(img => {
+      img.addEventListener('click', () => {
+        modalRoot.querySelector('#modal-content').innerHTML = `<img src="${img.src}" alt="${img.alt}" class="w-full rounded-md" />`;
+        modalRoot.classList.remove('hidden'); modalRoot.classList.add('flex');
+      });
+    });
+    document.getElementById('modal-close')?.addEventListener('click', () => {
+      modalRoot.classList.add('hidden'); modalRoot.classList.remove('flex');
+    });
+    modalRoot.addEventListener('click', (e) => { if (e.target === modalRoot) { modalRoot.classList.add('hidden'); modalRoot.classList.remove('flex'); } });
+
+    // Contact form
+    document.getElementById('contact-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('cname').value.trim();
+      const email = document.getElementById('cemail').value.trim();
+      const msg = document.getElementById('cmessage').value.trim();
+      if (!name || !email || !msg) { toast('Preencha todos os campos', 2500); return; }
+      toast('Mensagem enviada! Responderemos em até 48h.', 3500);
+      e.target.reset();
+    });
+
+    // Simple toast
+    function toast(message, ttl = 2600) {
+      const portal = document.getElementById('toast-portal');
+      const node = document.createElement('div');
+      node.className = 'toast success';
+      node.innerHTML = `<div class="msg">${message}</div>`;
+      portal.appendChild(node);
+      setTimeout(()=> { node.style.transition = 'opacity .24s, transform .24s'; node.style.opacity = '0'; node.style.transform = 'translateY(8px)'; setTimeout(()=> node.remove(), 260); }, ttl);
+    }
+
+    // Animated counters (simple)
+    function animateCounters() {
+      document.querySelectorAll('.stat').forEach(el => {
+        const raw = el.dataset.target;
+        if (!raw) return;
+        const target = parseInt(raw, 10) || 0;
+        const duration = 900 + Math.random()*400;
+        const start = 0;
+        let startTime = null;
+        function step(ts) {
+          if (!startTime) startTime = ts;
+          const progress = Math.min((ts - startTime) / duration, 1);
+          const val = Math.round(start + (target - start) * progress);
+          // show k formatting for >=1000
+          if (target >= 1000) el.textContent = (val >= 1000 ? (val/1000).toFixed(1) + 'k' : val);
+          else el.textContent = val;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }
+    animateCounters();
+
+    // Progress bar animation
+    setTimeout(()=> { document.getElementById('progress-bar').style.width = '48%'; }, 200);
+
+    // Keyboard: ESC closes modals
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!modalRoot.classList.contains('hidden')) { modalRoot.classList.add('hidden'); modalRoot.classList.remove('flex'); }
+        if (!donateModal.classList.contains('hidden')) { donateModal.classList.add('hidden'); donateModal.classList.remove('flex'); }
+      }
+    });
+
+    // Expose simple API for debugging
+    window._saudeSaneamento = { getFollowing, setFollowing };
+  </script>
+</body>
+</html>

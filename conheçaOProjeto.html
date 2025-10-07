@@ -20,9 +20,38 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Estilos customizados (Adicionados para o efeito de chuva) */
+        :root {
+            --aqua-main: #0077b6;
+            --aqua-vibrant: #00b4d8;
+        }
+
+        /* Decoration */
+        .rain-left { 
+            position: fixed; left: 6px; top: -10vh; width: 100px; height: 130vh; 
+            pointer-events: none; z-index: 3; /* Z-index: 3 para ficar abaixo do header fixo, mas acima do fundo */
+        } 
+        .rain-left .drop { 
+            position: absolute; width: 10px; height: 14px; 
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; 
+            background: radial-gradient(circle at 30% 20%, #ffffff 0%, rgba(255,255,255,0.6) 20%, rgba(0,180,216,0.95) 60%); 
+            box-shadow: 0 6px 18px rgba(0,120,160,0.18); opacity: .95; 
+            transform: translateY(-10vh) scale(.9); animation: fall linear infinite; 
+        }
+        @keyframes fall { 
+            0% { transform: translateY(-10vh) scale(.6); opacity: 0 } 
+            12% { opacity: 1 } 
+            100% { transform: translateY(110vh) scale(1.05); opacity: .9 } 
+        }
+        @media (max-width: 768px){ .rain-left { display: none; } }
+    </style>
 </head>
-<body class="bg-post-bg text-slate-800 font-sans">
+<body class="bg-post-bg text-slate-800 font-sans relative">
+
+    <div class="rain-left" id="rain-left" aria-hidden="true"></div>
 
     <header class="bg-white/90 backdrop-blur-sm shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -35,9 +64,7 @@
                 <a href="hub_ongs.html" class="text-slate-800 hover:text-aqua-main transition duration-300">ONGs</a>
                 <a href="attCadastro.html" class="text-slate-800 hover:text-aqua-main transition duration-300">Seja um Parceiro</a>
                 <a href="conheçaOProjeto.html" class="text-aqua-main font-semibold transition duration-300">Conheça o Projeto</a>
-                <a href="abaEntrar_login.html" class="py-2 px-5 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold flex items-center">
-                <a href="abaEntrar_login.html" class="py-2 px-5 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold">Entrar</a>
-                </a>
+                <a href="abaEntrar_login.html" class="py-2 px-5 bg-aqua-main text-white rounded-lg hover:bg-aqua-main/80 transition duration-300 font-semibold flex items-center">Entrar</a>
             </div>
         </nav>
     </header>
@@ -118,5 +145,29 @@
         </div>
     </main>
     <script src="header-logic.js"></script> 
+    
+    <script>
+        // JS para inicializar as gotas de chuva
+        document.addEventListener('DOMContentLoaded', function(){
+            (function createRain(){
+                const rain = document.querySelector('.rain-left');
+                if(!rain) return;
+                const drops = 12;
+                for(let i=0;i<drops;i++){
+                    const d = document.createElement('span');
+                    d.className = 'drop';
+                    d.style.left = Math.round(Math.random() * 80) + 'px';
+                    d.style.top = (Math.random() * -20) + 'vh';
+                    const scale = 0.7 + Math.random() * 0.9;
+                    d.style.width = Math.round(8 * scale) + 'px';
+                    d.style.height = Math.round(12 * scale) + 'px';
+                    const dur = 3.5 + Math.random() * 6.5;
+                    d.style.animationDuration = dur + 's';
+                    d.style.animationDelay = '-' + (Math.random() * 6) + 's';
+                    rain.appendChild(d);
+                }
+            })();
+        });
+    </script>
 </body>
 </html>
